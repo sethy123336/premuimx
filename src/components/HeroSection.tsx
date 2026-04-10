@@ -22,12 +22,12 @@ const HeroSection = () => {
       </Button>
 
       {/* Phone Mockup */}
-      <div className="relative w-full max-w-xs mx-auto">
+      <div className="relative w-full max-w-sm md:max-w-md mx-auto">
         <img
           src={phoneMockup}
           alt="PremiumX app dashboard"
-          width={512}
-          height={800}
+          width={1024}
+          height={1024}
           className="w-full h-auto drop-shadow-2xl"
         />
       </div>
