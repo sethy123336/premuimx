@@ -24,7 +24,7 @@ const Footer = () => {
             <div className="flex flex-wrap gap-x-6 gap-y-3">
               <a href="#" className="text-muted-foreground text-sm hover:text-foreground transition-colors">Privacy Policy</a>
               <a href="#" className="text-muted-foreground text-sm hover:text-foreground transition-colors">Terms & Conditions</a>
-              <a href="#" className="text-muted-foreground text-sm hover:text-foreground transition-colors">Academy</a>
+              
             </div>
           </div>
 
