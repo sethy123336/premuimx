@@ -8,7 +8,7 @@ const HeroSection = () => {
 
       {/* Heading */}
       <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground text-center leading-tight max-w-3xl mb-6">
-        PremiumX — The Smart Way to Move Value
+        The Smart Way to Move Value
       </h1>
 
       {/* Subheading */}
