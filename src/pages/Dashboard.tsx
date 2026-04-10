@@ -1,102 +1,101 @@
 import { useState } from "react";
-import { Menu, Bell, Copy, Bitcoin, Wallet, ArrowLeftRight, RefreshCw, BarChart3, Bot } from "lucide-react";
+import { Menu, Bell, DollarSign, Grid2X2, Wallet, BookOpen, Bot, Monitor } from "lucide-react";
 import logo from "@/assets/logo.png";
 
-const currencies = ["NGN", "GHS", "USD"] as const;
+const walletCards = [
+  { currency: "NGN", balance: "2,450,000.00", change: "+12.5%", changeColor: "text-green-400" },
+  { currency: "USD", balance: "5,280.50", change: "+8.2%", changeColor: "text-green-400" },
+  { currency: "USDT", balance: "3,150.00", change: "-2.1%", changeColor: "text-red-400" },
+];
 
-const services = [
-  { icon: Bitcoin, label: "Crypto", color: "bg-purple-500" },
-  { icon: Wallet, label: "Fund Accounts", color: "bg-purple-500" },
-  { icon: ArrowLeftRight, label: "Send & Receive", color: "bg-purple-500" },
-  { icon: RefreshCw, label: "Convert", color: "bg-purple-500" },
-  { icon: BarChart3, label: "Track Trades", color: "bg-purple-500" },
-  { icon: Bot, label: "AI Advisor", color: "bg-purple-500" },
+const bottomTabs = [
+  { icon: Grid2X2, label: "Dashboard", active: true },
+  { icon: Wallet, label: "Wallet", active: false },
+  { icon: Monitor, label: "Fund Deriv", active: false },
+  { icon: BookOpen, label: "Journal", active: false },
+  { icon: Bot, label: "AI", active: false },
 ];
 
 const Dashboard = () => {
-  const [activeCurrency, setActiveCurrency] = useState<typeof currencies[number]>("NGN");
-
-  const balances: Record<typeof currencies[number], string> = {
-    NGN: "605,752.37",
-    GHS: "12,340.00",
-    USD: "1,250.00",
-  };
-
-  const handleCopyTag = () => {
-    navigator.clipboard.writeText("lb");
-  };
+  const [activeTab, setActiveTab] = useState("Dashboard");
 
   return (
-    <div className="min-h-screen bg-[hsl(220,30%,8%)] text-white flex flex-col">
+    <div className="min-h-screen bg-[hsl(220,40%,7%)] text-white flex flex-col">
       {/* Top Bar */}
-      <div className="flex items-center justify-between px-5 pt-6 pb-4">
-        <Menu className="w-6 h-6 text-white/80" />
-        <div className="relative">
-          <Bell className="w-6 h-6 text-white/80" />
-          <span className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full text-[10px] flex items-center justify-center font-bold">1</span>
-        </div>
-        <div className="w-9 h-9 rounded-full overflow-hidden border-2 border-purple-400">
-          <img src={logo} alt="Profile" className="w-full h-full object-cover" />
-        </div>
-      </div>
-
-      {/* Wallet Section */}
-      <div className="px-5 pt-2 pb-6">
-        <p className="text-xs text-white/50 uppercase tracking-widest mb-1">Wallet Balance</p>
-        <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-4">
-          {balances[activeCurrency]}
-        </h1>
-
-        {/* Currency Tabs */}
-        <div className="flex gap-0 bg-[hsl(220,30%,14%)] rounded-lg w-fit overflow-hidden">
-          {currencies.map((cur) => (
-            <button
-              key={cur}
-              onClick={() => setActiveCurrency(cur)}
-              className={`px-5 py-2 text-sm font-semibold transition-all ${
-                activeCurrency === cur
-                  ? "bg-[hsl(220,30%,20%)] text-white"
-                  : "text-white/50 hover:text-white/70"
-              }`}
-            >
-              {cur}
-            </button>
-          ))}
-        </div>
-
-        {/* AstroTag */}
-        <div className="flex items-center justify-between mt-5">
-          <div className="flex items-center gap-2">
-            <span className="text-sm font-semibold text-white">AstroTag: lb</span>
-            <span className="w-5 h-5 rounded-full bg-purple-500 flex items-center justify-center text-[10px] font-bold">A</span>
+      <div className="flex items-center justify-between px-5 pt-6 pb-2">
+        <Menu className="w-6 h-6 text-white/70" />
+        <div className="flex items-center gap-3">
+          <div className="relative">
+            <Bell className="w-6 h-6 text-white/70" />
+            <span className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full text-[10px] flex items-center justify-center font-bold">1</span>
           </div>
-          <button
-            onClick={handleCopyTag}
-            className="text-sm text-white/60 hover:text-white flex items-center gap-1 transition-colors"
-          >
-            <Copy className="w-4 h-4" /> Copy
-          </button>
+          <div className="w-9 h-9 rounded-full overflow-hidden border-2 border-purple-400">
+            <img src={logo} alt="Profile" className="w-full h-full object-cover" />
+          </div>
         </div>
       </div>
 
-      {/* Services Grid */}
-      <div className="mx-5 bg-[hsl(220,20%,95%)] rounded-3xl p-6">
-        <div className="grid grid-cols-3 gap-y-6 gap-x-4">
-          {services.map(({ icon: Icon, label }) => (
-            <button key={label} className="flex flex-col items-center gap-2 group">
-              <div className="w-16 h-16 rounded-2xl bg-purple-100 flex items-center justify-center group-hover:bg-purple-200 transition-colors">
-                <Icon className="w-7 h-7 text-purple-600" />
+      {/* Welcome */}
+      <div className="px-5 pt-4 pb-2">
+        <h1 className="text-2xl font-bold">
+          Hello, <span className="text-amber-400">Dan</span>
+        </h1>
+        <p className="text-sm text-white/50 mt-1">Here's your trading overview</p>
+      </div>
+
+      {/* Wallet Balances */}
+      <div className="px-5 pt-4">
+        <div className="flex items-center gap-2 mb-4">
+          <Wallet className="w-5 h-5 text-white/80" />
+          <span className="text-base font-semibold">Wallet Balances</span>
+        </div>
+
+        <div className="space-y-3">
+          {walletCards.map((card) => (
+            <div
+              key={card.currency}
+              className="bg-[hsl(220,30%,12%)] rounded-2xl px-5 py-4 flex items-center justify-between border border-white/5"
+            >
+              <div>
+                <p className="text-xs text-white/50 mb-1">{card.currency}</p>
+                <p className="text-2xl font-bold tracking-tight">{card.balance}</p>
+                <p className={`text-xs mt-1 ${card.changeColor}`}>{card.change}</p>
               </div>
-              <span className="text-xs font-medium text-[hsl(220,30%,12%)] text-center leading-tight">
-                {label}
-              </span>
-            </button>
+              <DollarSign className="w-10 h-10 text-white/10" />
+            </div>
           ))}
         </div>
       </div>
 
-      {/* Bottom spacing */}
+      {/* Quick Actions label */}
+      <div className="px-5 pt-6 pb-2">
+        <p className="text-base font-semibold">Quick Actions</p>
+      </div>
+
+      {/* Spacer */}
       <div className="flex-1" />
+
+      {/* Bottom Navigation */}
+      <div className="bg-[hsl(220,30%,10%)] border-t border-white/10 px-2 pb-2 pt-2">
+        <div className="flex justify-around">
+          {bottomTabs.map((tab) => {
+            const Icon = tab.icon;
+            const isActive = activeTab === tab.label;
+            return (
+              <button
+                key={tab.label}
+                onClick={() => setActiveTab(tab.label)}
+                className={`flex flex-col items-center gap-1 px-3 py-2 rounded-xl transition-colors ${
+                  isActive ? "text-amber-400" : "text-white/40"
+                }`}
+              >
+                <Icon className="w-5 h-5" />
+                <span className="text-[10px] font-medium">{tab.label}</span>
+              </button>
+            );
+          })}
+        </div>
+      </div>
     </div>
   );
 };
