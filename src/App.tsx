@@ -9,6 +9,7 @@ import PrivacyPolicy from "./pages/PrivacyPolicy.tsx";
 import TermsAndConditions from "./pages/TermsAndConditions.tsx";
 import Signup from "./pages/Signup.tsx";
 import Login from "./pages/Login.tsx";
+import Dashboard from "./pages/Dashboard.tsx";
 
 const queryClient = new QueryClient();
 
