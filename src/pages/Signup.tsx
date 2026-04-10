@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Eye, EyeOff } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import logo from "@/assets/logo.png";
 
 const Signup = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -28,9 +29,7 @@ const Signup = () => {
       {/* Header */}
       <div className="px-6 py-5">
         <Link to="/" className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
-            <span className="text-primary-foreground font-bold text-lg">P</span>
-          </div>
+          <img src={logo} alt="PremiumX" className="w-8 h-8 rounded-lg" />
           <span className="text-xl font-bold text-foreground tracking-tight">PremiumX</span>
         </Link>
       </div>

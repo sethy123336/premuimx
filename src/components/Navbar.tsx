@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
 import { Link } from "react-router-dom";
+import logo from "@/assets/logo.png";
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
@@ -8,9 +9,7 @@ const Navbar = () => {
   return (
     <nav className="w-full flex items-center justify-between px-6 py-5 max-w-6xl mx-auto">
       <div className="flex items-center gap-2">
-        <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
-          <span className="text-primary-foreground font-bold text-lg">P</span>
-        </div>
+        <img src={logo} alt="PremiumX" className="w-8 h-8 rounded-lg" />
         <span className="text-xl font-bold text-foreground tracking-tight">premiumX</span>
       </div>
 
