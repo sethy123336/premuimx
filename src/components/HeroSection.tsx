@@ -5,20 +5,6 @@ import { Star } from "lucide-react";
 const HeroSection = () => {
   return (
     <section className="w-full flex flex-col items-center px-6 pt-8 pb-16" style={{ background: "var(--hero-gradient)" }}>
-      {/* Badge */}
-      <div className="flex items-center gap-2 bg-background border border-border rounded-full px-4 py-2 mb-8 shadow-sm">
-        <div className="flex items-center gap-1">
-          <div className="w-5 h-5 rounded bg-foreground flex items-center justify-center">
-            <span className="text-background text-[10px] font-bold">A</span>
-          </div>
-          <div className="w-5 h-5 rounded bg-accent flex items-center justify-center">
-            <span className="text-accent-foreground text-[10px] font-bold">▶</span>
-          </div>
-        </div>
-        <span className="text-sm text-muted-foreground font-medium">4.6</span>
-        <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-        <span className="text-sm text-muted-foreground font-medium">and 2.2M+ downloads</span>
-      </div>
 
       {/* Heading */}
       <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground text-center leading-tight max-w-3xl mb-6">
