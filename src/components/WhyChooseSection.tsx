@@ -1,6 +1,7 @@
 import phoneMockup from "@/assets/phone-mockup.png";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const WhyChooseSection = () => {
   return (
@@ -77,9 +78,11 @@ const WhyChooseSection = () => {
             </div>
           </div>
 
-          <Button variant="hero" size="lg" className="px-8 py-6 text-base gap-2 bg-primary">
-            TRADE NOW <ArrowRight className="w-5 h-5" />
-          </Button>
+          <Link to="/signup">
+            <Button variant="hero" size="lg" className="px-8 py-6 text-base gap-2 bg-primary">
+              TRADE NOW <ArrowRight className="w-5 h-5" />
+            </Button>
+          </Link>
         </div>
       </div>
 
