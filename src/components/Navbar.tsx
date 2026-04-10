@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
@@ -21,7 +22,7 @@ const Navbar = () => {
         <a href="#" className="hover:text-foreground transition-colors">Products</a>
         <a href="#" className="hover:text-foreground transition-colors">Company</a>
         <a href="#" className="hover:text-foreground transition-colors">Support</a>
-        <a href="#" className="bg-primary text-primary-foreground px-5 py-2.5 rounded-full hover:bg-primary/90 transition-colors">Get Started</a>
+        <Link to="/signup" className="bg-primary text-primary-foreground px-5 py-2.5 rounded-full hover:bg-primary/90 transition-colors">Get Started</Link>
       </div>
 
       {open && (
@@ -29,7 +30,7 @@ const Navbar = () => {
           <a href="#" className="text-foreground font-medium">Products</a>
           <a href="#" className="text-foreground font-medium">Company</a>
           <a href="#" className="text-foreground font-medium">Support</a>
-          <a href="#" className="bg-primary text-primary-foreground px-5 py-2.5 rounded-full text-center font-medium">Get Started</a>
+          <Link to="/signup" className="bg-primary text-primary-foreground px-5 py-2.5 rounded-full text-center font-medium">Get Started</Link>
         </div>
       )}
     </nav>

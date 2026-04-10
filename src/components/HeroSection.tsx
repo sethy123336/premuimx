@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import phoneMockup from "@/assets/phone-mockup.png";
+import { Link } from "react-router-dom";
 import { Star } from "lucide-react";
 
 const HeroSection = () => {
@@ -15,9 +16,11 @@ const HeroSection = () => {
           <p className="text-lg md:text-xl text-muted-foreground max-w-xl mb-10 leading-relaxed">
             Buy, sell, trade, and pay across crypto, cash, and digital assets all in one platform.
           </p>
-          <Button variant="hero" size="lg" className="px-10 py-6 text-lg">
-            Get Started
-          </Button>
+          <Link to="/signup">
+            <Button variant="hero" size="lg" className="px-10 py-6 text-lg">
+              Get Started
+            </Button>
+          </Link>
         </div>
 
         {/* Right: Phone Mockup */}
