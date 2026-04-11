@@ -1,4 +1,11 @@
 import { Wallet, Bitcoin, BrainCircuit, BarChart3 } from "lucide-react";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselPrevious,
+  CarouselNext,
+} from "@/components/ui/carousel";
 
 const services = [
   {
@@ -38,21 +45,32 @@ const WhatWeDoSection = () => {
         <h2 className="text-3xl md:text-4xl font-bold text-foreground text-center mb-12">
           What We Do
         </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {services.map((service) => (
-            <div
-              key={service.title}
-              className={`group rounded-2xl border ${service.border} ${service.bg} p-8 flex flex-col items-center text-center transition-all duration-300 hover:-translate-y-2 hover:shadow-lg cursor-default`}
-            >
-              <div className={`mb-5 ${service.iconColor}`}>
-                <service.icon size={40} strokeWidth={1.5} />
-              </div>
-              <h3 className="text-lg font-bold text-foreground leading-snug">
-                {service.title}
-              </h3>
-            </div>
-          ))}
-        </div>
+        <Carousel
+          opts={{ align: "start", loop: true }}
+          className="w-full"
+        >
+          <CarouselContent className="-ml-4">
+            {services.map((service) => (
+              <CarouselItem
+                key={service.title}
+                className="pl-4 basis-full sm:basis-1/2 lg:basis-1/2"
+              >
+                <div
+                  className={`rounded-2xl border ${service.border} ${service.bg} p-10 flex flex-col items-center text-center h-48 justify-center transition-all duration-300`}
+                >
+                  <div className={`mb-5 ${service.iconColor}`}>
+                    <service.icon size={40} strokeWidth={1.5} />
+                  </div>
+                  <h3 className="text-lg font-bold text-foreground leading-snug">
+                    {service.title}
+                  </h3>
+                </div>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+          <CarouselPrevious className="-left-4 md:-left-12" />
+          <CarouselNext className="-right-4 md:-right-12" />
+        </Carousel>
       </div>
     </section>
   );
