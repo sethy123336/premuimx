@@ -1,29 +1,49 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
-import { Eye, EyeOff } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
+import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "@/hooks/use-toast";
 import logo from "@/assets/logo.png";
 
 const Login = () => {
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
-  const [form, setForm] = useState({
-    email: "",
-    password: "",
-  });
+  const [loading, setLoading] = useState(false);
+  const [form, setForm] = useState({ email: "", password: "" });
 
   const handleChange = (field: string, value: string) => {
     setForm((prev) => ({ ...prev, [field]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Auth logic will be added when Lovable Cloud is enabled
+    if (loading) return;
+
+    if (!form.email || !form.password) {
+      toast({ title: "Missing information", description: "Email and password are required.", variant: "destructive" });
+      return;
+    }
+
+    setLoading(true);
+    const { error } = await supabase.auth.signInWithPassword({
+      email: form.email,
+      password: form.password,
+    });
+    setLoading(false);
+
+    if (error) {
+      toast({ title: "Login failed", description: error.message, variant: "destructive" });
+      return;
+    }
+
+    toast({ title: "Welcome back" });
+    navigate("/dashboard");
   };
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
-      {/* Header */}
       <div className="px-6 py-5">
         <Link to="/" className="flex items-center gap-2">
           <img src={logo} alt="PremiumX" className="w-8 h-8 rounded-lg" />
@@ -31,7 +51,6 @@ const Login = () => {
         </Link>
       </div>
 
-      {/* Form */}
       <div className="flex-1 flex items-start justify-center px-6 pb-10">
         <div className="w-full max-w-md">
           <h1 className="text-3xl font-bold text-foreground mb-2">Welcome back 👋</h1>
@@ -67,12 +86,8 @@ const Login = () => {
               <a href="#" className="text-sm text-primary hover:underline">Forgot password?</a>
             </div>
 
-            <Button
-              type="submit"
-              className="w-full h-14 rounded-xl text-base font-semibold"
-              size="lg"
-            >
-              Log In
+            <Button type="submit" disabled={loading} className="w-full h-14 rounded-xl text-base font-semibold" size="lg">
+              {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : "Log In"}
             </Button>
           </form>
 
