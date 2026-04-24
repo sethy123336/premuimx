@@ -14,6 +14,93 @@ export type Database = {
   }
   public: {
     Tables: {
+      deriv_accounts: {
+        Row: {
+          cr_number: string
+          created_at: string
+          id: string
+          is_default: boolean
+          nickname: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          cr_number: string
+          created_at?: string
+          id?: string
+          is_default?: boolean
+          nickname?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          cr_number?: string
+          created_at?: string
+          id?: string
+          is_default?: boolean
+          nickname?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      deriv_funding_requests: {
+        Row: {
+          amount: number
+          cr_number: string
+          created_at: string
+          currency: Database["public"]["Enums"]["currency_code"]
+          deriv_account_id: string | null
+          id: string
+          notes: string | null
+          source_wallet_id: string | null
+          status: Database["public"]["Enums"]["transaction_status"]
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          amount: number
+          cr_number: string
+          created_at?: string
+          currency: Database["public"]["Enums"]["currency_code"]
+          deriv_account_id?: string | null
+          id?: string
+          notes?: string | null
+          source_wallet_id?: string | null
+          status?: Database["public"]["Enums"]["transaction_status"]
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          amount?: number
+          cr_number?: string
+          created_at?: string
+          currency?: Database["public"]["Enums"]["currency_code"]
+          deriv_account_id?: string | null
+          id?: string
+          notes?: string | null
+          source_wallet_id?: string | null
+          status?: Database["public"]["Enums"]["transaction_status"]
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "deriv_funding_requests_deriv_account_id_fkey"
+            columns: ["deriv_account_id"]
+            isOneToOne: false
+            referencedRelation: "deriv_accounts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "deriv_funding_requests_source_wallet_id_fkey"
+            columns: ["source_wallet_id"]
+            isOneToOne: false
+            referencedRelation: "wallets"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           created_at: string
@@ -47,6 +134,89 @@ export type Database = {
         }
         Relationships: []
       }
+      transactions: {
+        Row: {
+          amount: number
+          created_at: string
+          currency: Database["public"]["Enums"]["currency_code"]
+          description: string | null
+          id: string
+          metadata: Json
+          reference: string | null
+          status: Database["public"]["Enums"]["transaction_status"]
+          type: Database["public"]["Enums"]["transaction_type"]
+          updated_at: string
+          user_id: string
+          wallet_id: string | null
+        }
+        Insert: {
+          amount: number
+          created_at?: string
+          currency: Database["public"]["Enums"]["currency_code"]
+          description?: string | null
+          id?: string
+          metadata?: Json
+          reference?: string | null
+          status?: Database["public"]["Enums"]["transaction_status"]
+          type: Database["public"]["Enums"]["transaction_type"]
+          updated_at?: string
+          user_id: string
+          wallet_id?: string | null
+        }
+        Update: {
+          amount?: number
+          created_at?: string
+          currency?: Database["public"]["Enums"]["currency_code"]
+          description?: string | null
+          id?: string
+          metadata?: Json
+          reference?: string | null
+          status?: Database["public"]["Enums"]["transaction_status"]
+          type?: Database["public"]["Enums"]["transaction_type"]
+          updated_at?: string
+          user_id?: string
+          wallet_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "transactions_wallet_id_fkey"
+            columns: ["wallet_id"]
+            isOneToOne: false
+            referencedRelation: "wallets"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      wallets: {
+        Row: {
+          available_balance: number
+          balance: number
+          created_at: string
+          currency: Database["public"]["Enums"]["currency_code"]
+          id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          available_balance?: number
+          balance?: number
+          created_at?: string
+          currency: Database["public"]["Enums"]["currency_code"]
+          id?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          available_balance?: number
+          balance?: number
+          created_at?: string
+          currency?: Database["public"]["Enums"]["currency_code"]
+          id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -55,7 +225,14 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      currency_code: "NGN" | "USD" | "USDT" | "BTC" | "ETH"
+      transaction_status: "pending" | "completed" | "failed" | "cancelled"
+      transaction_type:
+        | "deposit"
+        | "withdrawal"
+        | "transfer"
+        | "convert"
+        | "deriv_funding"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -182,6 +359,16 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      currency_code: ["NGN", "USD", "USDT", "BTC", "ETH"],
+      transaction_status: ["pending", "completed", "failed", "cancelled"],
+      transaction_type: [
+        "deposit",
+        "withdrawal",
+        "transfer",
+        "convert",
+        "deriv_funding",
+      ],
+    },
   },
 } as const
