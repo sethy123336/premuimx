@@ -136,10 +136,11 @@ const Signup = () => {
 
             <Button
               type="submit"
+              disabled={loading}
               className="w-full h-14 rounded-xl text-base font-semibold mt-4"
               size="lg"
             >
-              Next
+              {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : "Next"}
             </Button>
           </form>
 
