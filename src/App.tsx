@@ -10,6 +10,8 @@ import TermsAndConditions from "./pages/TermsAndConditions.tsx";
 import Signup from "./pages/Signup.tsx";
 import Login from "./pages/Login.tsx";
 import Dashboard from "./pages/Dashboard.tsx";
+import Wallet from "./pages/Wallet.tsx";
+import WalletDetail from "./pages/WalletDetail.tsx";
 import { AuthProvider } from "./hooks/useAuth";
 import ProtectedRoute from "./components/ProtectedRoute";
 
