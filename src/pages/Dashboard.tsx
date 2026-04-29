@@ -8,6 +8,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } f
 import { Button } from "@/components/ui/button";
 import FundModal from "@/components/dashboard/FundModal";
 import WithdrawModal from "@/components/dashboard/WithdrawModal";
+import ConvertModal from "@/components/dashboard/ConvertModal";
 import TransactionsList from "@/components/dashboard/TransactionsList";
 import logo from "@/assets/logo.png";
 
@@ -47,8 +48,7 @@ const quickActions: { key: ActionKey; icon: typeof ArrowDownToLine; label: strin
   { key: "send", icon: Send, label: "Send", tone: "text-purple-400" },
 ];
 
-const actionCopy: Record<Exclude<ActionKey, "fund" | "withdraw">, { title: string; description: string }> = {
-  convert: { title: "Convert Currency", description: "Swap between NGN, USD and USDT at live rates. Coming next." },
+const actionCopy: Record<Exclude<ActionKey, "fund" | "withdraw" | "convert">, { title: string; description: string }> = {
   send: { title: "Send to AstroTag", description: "Instantly send to another PremiumX user via AstroTag. Coming next." },
 };
 
@@ -245,13 +245,27 @@ const Dashboard = () => {
         />
       )}
 
+      {/* Convert Modal */}
+      {user && (
+        <ConvertModal
+          open={openAction === "convert"}
+          onOpenChange={(o) => !o && setOpenAction(null)}
+          userId={user.id}
+          wallets={wallets.filter((w) => ["NGN", "USD", "USDT"].includes(w.currency)) as any}
+          onCreated={() => {
+            setTxRefreshKey((k) => k + 1);
+            reloadWallets();
+          }}
+        />
+      )}
+
       {/* Other Quick Action placeholders */}
       <Dialog
-        open={openAction !== null && openAction !== "fund" && openAction !== "withdraw"}
+        open={openAction !== null && openAction !== "fund" && openAction !== "withdraw" && openAction !== "convert"}
         onOpenChange={(o) => !o && setOpenAction(null)}
       >
         <DialogContent className="bg-[hsl(220,30%,12%)] border-white/10 text-white">
-          {openAction && openAction !== "fund" && openAction !== "withdraw" && (
+          {openAction && openAction !== "fund" && openAction !== "withdraw" && openAction !== "convert" && (
             <>
               <DialogHeader>
                 <DialogTitle className="text-white">{actionCopy[openAction].title}</DialogTitle>
