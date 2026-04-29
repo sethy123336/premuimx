@@ -80,8 +80,8 @@ const TransactionsList = ({ userId, refreshKey = 0, currency, limit = 10, hideHe
   }, [userId, refreshKey, currency, limit]);
 
   return (
-    <div className="px-5 pt-6 pb-4">
-      <p className="text-base font-semibold mb-3">Recent Activity</p>
+    <div className={className ?? "px-5 pt-6 pb-4"}>
+      {!hideHeader && <p className="text-base font-semibold mb-3">Recent Activity</p>}
 
       {loading ? (
         <div className="flex items-center justify-center py-8">
