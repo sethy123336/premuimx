@@ -222,7 +222,15 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      convert_currency: {
+        Args: {
+          _from_amount: number
+          _from_currency: Database["public"]["Enums"]["currency_code"]
+          _rate: number
+          _to_currency: Database["public"]["Enums"]["currency_code"]
+        }
+        Returns: Json
+      }
     }
     Enums: {
       currency_code: "NGN" | "USD" | "USDT" | "BTC" | "ETH"
