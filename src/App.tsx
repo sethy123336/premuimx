@@ -38,6 +38,22 @@ const App = () => (
                 </ProtectedRoute>
               }
             />
+            <Route
+              path="/wallet"
+              element={
+                <ProtectedRoute>
+                  <Wallet />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/wallet/:currency"
+              element={
+                <ProtectedRoute>
+                  <WalletDetail />
+                </ProtectedRoute>
+              }
+            />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
