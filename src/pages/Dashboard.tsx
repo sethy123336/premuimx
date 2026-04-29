@@ -190,6 +190,9 @@ const Dashboard = () => {
         </div>
       </div>
 
+      {/* Recent Activity */}
+      {user && <TransactionsList userId={user.id} refreshKey={txRefreshKey} />}
+
       <div className="flex-1" />
 
       {/* Bottom Navigation */}
@@ -214,10 +217,27 @@ const Dashboard = () => {
         </div>
       </div>
 
-      {/* Quick Action Modal */}
-      <Dialog open={openAction !== null} onOpenChange={(o) => !o && setOpenAction(null)}>
+      {/* Fund Modal */}
+      {user && (
+        <FundModal
+          open={openAction === "fund"}
+          onOpenChange={(o) => !o && setOpenAction(null)}
+          userId={user.id}
+          ngnWalletId={ngnWalletId}
+          onCreated={() => {
+            setTxRefreshKey((k) => k + 1);
+            reloadWallets();
+          }}
+        />
+      )}
+
+      {/* Other Quick Action placeholders */}
+      <Dialog
+        open={openAction !== null && openAction !== "fund"}
+        onOpenChange={(o) => !o && setOpenAction(null)}
+      >
         <DialogContent className="bg-[hsl(220,30%,12%)] border-white/10 text-white">
-          {openAction && (
+          {openAction && openAction !== "fund" && (
             <>
               <DialogHeader>
                 <DialogTitle className="text-white">{actionCopy[openAction].title}</DialogTitle>
