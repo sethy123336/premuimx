@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Menu, Bell, DollarSign, Grid2X2, Wallet, BookOpen, Bot, Monitor, ArrowDownToLine, ArrowUpFromLine, Repeat, Send, LogOut, Loader2 } from "lucide-react";
+import { Menu, Bell, DollarSign, Wallet, ArrowDownToLine, ArrowUpFromLine, Repeat, Send, LogOut, Loader2 } from "lucide-react";
+import BottomNav from "@/components/dashboard/BottomNav";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "@/hooks/use-toast";
