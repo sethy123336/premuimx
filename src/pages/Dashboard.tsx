@@ -48,8 +48,7 @@ const quickActions: { key: ActionKey; icon: typeof ArrowDownToLine; label: strin
   { key: "send", icon: Send, label: "Send", tone: "text-purple-400" },
 ];
 
-const actionCopy: Record<Exclude<ActionKey, "fund" | "withdraw">, { title: string; description: string }> = {
-  convert: { title: "Convert Currency", description: "Swap between NGN, USD and USDT at live rates. Coming next." },
+const actionCopy: Record<Exclude<ActionKey, "fund" | "withdraw" | "convert">, { title: string; description: string }> = {
   send: { title: "Send to AstroTag", description: "Instantly send to another PremiumX user via AstroTag. Coming next." },
 };
 
