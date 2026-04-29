@@ -32,14 +32,6 @@ const formatBalance = (currency: Currency, value: number) => {
   }).format(value);
 };
 
-const bottomTabs = [
-  { icon: Grid2X2, label: "Dashboard" },
-  { icon: Wallet, label: "Wallet" },
-  { icon: Monitor, label: "Fund Deriv" },
-  { icon: BookOpen, label: "Journal" },
-  { icon: Bot, label: "AI" },
-];
-
 type ActionKey = "fund" | "withdraw" | "convert" | "send";
 
 const quickActions: { key: ActionKey; icon: typeof ArrowDownToLine; label: string; tone: string }[] = [
