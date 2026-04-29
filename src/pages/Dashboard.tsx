@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Menu, Bell, DollarSign, Grid2X2, Wallet, BookOpen, Bot, Monitor, ArrowDownToLine, ArrowUpFromLine, Repeat, Send, LogOut, Loader2 } from "lucide-react";
+import { Menu, Bell, DollarSign, Wallet, ArrowDownToLine, ArrowUpFromLine, Repeat, Send, LogOut, Loader2 } from "lucide-react";
+import BottomNav from "@/components/dashboard/BottomNav";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "@/hooks/use-toast";
@@ -31,14 +32,6 @@ const formatBalance = (currency: Currency, value: number) => {
   }).format(value);
 };
 
-const bottomTabs = [
-  { icon: Grid2X2, label: "Dashboard" },
-  { icon: Wallet, label: "Wallet" },
-  { icon: Monitor, label: "Fund Deriv" },
-  { icon: BookOpen, label: "Journal" },
-  { icon: Bot, label: "AI" },
-];
-
 type ActionKey = "fund" | "withdraw" | "convert" | "send";
 
 const quickActions: { key: ActionKey; icon: typeof ArrowDownToLine; label: string; tone: string }[] = [
@@ -55,7 +48,7 @@ const actionCopy: Record<Exclude<ActionKey, "fund" | "withdraw" | "convert">, { 
 const Dashboard = () => {
   const navigate = useNavigate();
   const { user, signOut } = useAuth();
-  const [activeTab, setActiveTab] = useState("Dashboard");
+  
   const [wallets, setWallets] = useState<WalletRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [openAction, setOpenAction] = useState<ActionKey | null>(null);
@@ -195,27 +188,7 @@ const Dashboard = () => {
 
       <div className="flex-1" />
 
-      {/* Bottom Navigation */}
-      <div className="bg-[hsl(220,30%,10%)] border-t border-white/10 px-2 pb-2 pt-2">
-        <div className="flex justify-around">
-          {bottomTabs.map((tab) => {
-            const Icon = tab.icon;
-            const isActive = activeTab === tab.label;
-            return (
-              <button
-                key={tab.label}
-                onClick={() => setActiveTab(tab.label)}
-                className={`flex flex-col items-center gap-1 px-3 py-2 rounded-xl transition-colors ${
-                  isActive ? "text-amber-400" : "text-white/40"
-                }`}
-              >
-                <Icon className="w-5 h-5" />
-                <span className="text-[10px] font-medium">{tab.label}</span>
-              </button>
-            );
-          })}
-        </div>
-      </div>
+      <BottomNav />
 
       {/* Fund Modal */}
       {user && (
