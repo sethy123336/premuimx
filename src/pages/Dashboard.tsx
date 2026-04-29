@@ -8,6 +8,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } f
 import { Button } from "@/components/ui/button";
 import FundModal from "@/components/dashboard/FundModal";
 import WithdrawModal from "@/components/dashboard/WithdrawModal";
+import ConvertModal from "@/components/dashboard/ConvertModal";
 import TransactionsList from "@/components/dashboard/TransactionsList";
 import logo from "@/assets/logo.png";
 
