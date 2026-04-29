@@ -7,6 +7,7 @@ import { toast } from "@/hooks/use-toast";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import FundModal from "@/components/dashboard/FundModal";
+import WithdrawModal from "@/components/dashboard/WithdrawModal";
 import TransactionsList from "@/components/dashboard/TransactionsList";
 import logo from "@/assets/logo.png";
 
