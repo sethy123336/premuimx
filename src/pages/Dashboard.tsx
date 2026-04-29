@@ -6,6 +6,8 @@ import { useAuth } from "@/hooks/useAuth";
 import { toast } from "@/hooks/use-toast";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import FundModal from "@/components/dashboard/FundModal";
+import TransactionsList from "@/components/dashboard/TransactionsList";
 import logo from "@/assets/logo.png";
 
 type Currency = "NGN" | "USD" | "USDT" | "BTC" | "ETH";
@@ -44,8 +46,7 @@ const quickActions: { key: ActionKey; icon: typeof ArrowDownToLine; label: strin
   { key: "send", icon: Send, label: "Send", tone: "text-purple-400" },
 ];
 
-const actionCopy: Record<ActionKey, { title: string; description: string }> = {
-  fund: { title: "Fund Wallet", description: "Top up your NGN, USD or USDT wallet. Payment rails coming next." },
+const actionCopy: Record<Exclude<ActionKey, "fund">, { title: string; description: string }> = {
   withdraw: { title: "Withdraw Funds", description: "Send funds to your bank or external wallet. Coming next." },
   convert: { title: "Convert Currency", description: "Swap between NGN, USD and USDT at live rates. Coming next." },
   send: { title: "Send to AstroTag", description: "Instantly send to another PremiumX user via AstroTag. Coming next." },
@@ -59,6 +60,18 @@ const Dashboard = () => {
   const [loading, setLoading] = useState(true);
   const [openAction, setOpenAction] = useState<ActionKey | null>(null);
   const [username, setUsername] = useState<string>("");
+  const [txRefreshKey, setTxRefreshKey] = useState(0);
+
+  const ngnWalletId = useMemo(() => wallets.find((w) => w.currency === "NGN")?.id, [wallets]);
+
+  const reloadWallets = async () => {
+    if (!user) return;
+    const { data } = await supabase
+      .from("wallets")
+      .select("id,currency,balance,available_balance")
+      .eq("user_id", user.id);
+    if (data) setWallets(data as WalletRow[]);
+  };
 
   useEffect(() => {
     if (!user) return;
