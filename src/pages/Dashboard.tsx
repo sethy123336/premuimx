@@ -245,13 +245,27 @@ const Dashboard = () => {
         />
       )}
 
+      {/* Convert Modal */}
+      {user && (
+        <ConvertModal
+          open={openAction === "convert"}
+          onOpenChange={(o) => !o && setOpenAction(null)}
+          userId={user.id}
+          wallets={wallets.filter((w) => ["NGN", "USD", "USDT"].includes(w.currency)) as any}
+          onCreated={() => {
+            setTxRefreshKey((k) => k + 1);
+            reloadWallets();
+          }}
+        />
+      )}
+
       {/* Other Quick Action placeholders */}
       <Dialog
-        open={openAction !== null && openAction !== "fund" && openAction !== "withdraw"}
+        open={openAction !== null && openAction !== "fund" && openAction !== "withdraw" && openAction !== "convert"}
         onOpenChange={(o) => !o && setOpenAction(null)}
       >
         <DialogContent className="bg-[hsl(220,30%,12%)] border-white/10 text-white">
-          {openAction && openAction !== "fund" && openAction !== "withdraw" && (
+          {openAction && openAction !== "fund" && openAction !== "withdraw" && openAction !== "convert" && (
             <>
               <DialogHeader>
                 <DialogTitle className="text-white">{actionCopy[openAction].title}</DialogTitle>
