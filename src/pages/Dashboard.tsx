@@ -48,7 +48,7 @@ const actionCopy: Record<Exclude<ActionKey, "fund" | "withdraw" | "convert">, { 
 const Dashboard = () => {
   const navigate = useNavigate();
   const { user, signOut } = useAuth();
-  const [activeTab, setActiveTab] = useState("Dashboard");
+  
   const [wallets, setWallets] = useState<WalletRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [openAction, setOpenAction] = useState<ActionKey | null>(null);
