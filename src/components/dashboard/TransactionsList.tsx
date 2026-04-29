@@ -49,30 +49,35 @@ const formatDate = (iso: string) => {
 interface TransactionsListProps {
   userId: string;
   refreshKey?: number;
+  currency?: Currency;
+  limit?: number;
+  hideHeader?: boolean;
+  className?: string;
 }
 
-const TransactionsList = ({ userId, refreshKey = 0 }: TransactionsListProps) => {
+const TransactionsList = ({ userId, refreshKey = 0, currency, limit = 10, hideHeader = false, className }: TransactionsListProps) => {
   const [rows, setRows] = useState<TxRow[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     let cancelled = false;
     setLoading(true);
-    supabase
+    let q = supabase
       .from("transactions")
       .select("id,type,status,amount,currency,description,created_at")
       .eq("user_id", userId)
       .order("created_at", { ascending: false })
-      .limit(10)
-      .then(({ data }) => {
-        if (cancelled) return;
-        setRows((data ?? []) as TxRow[]);
-        setLoading(false);
-      });
+      .limit(limit);
+    if (currency) q = q.eq("currency", currency);
+    q.then(({ data }) => {
+      if (cancelled) return;
+      setRows((data ?? []) as TxRow[]);
+      setLoading(false);
+    });
     return () => {
       cancelled = true;
     };
-  }, [userId, refreshKey]);
+  }, [userId, refreshKey, currency, limit]);
 
   return (
     <div className="px-5 pt-6 pb-4">
