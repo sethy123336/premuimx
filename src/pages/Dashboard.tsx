@@ -231,13 +231,27 @@ const Dashboard = () => {
         />
       )}
 
+      {/* Withdraw Modal */}
+      {user && (
+        <WithdrawModal
+          open={openAction === "withdraw"}
+          onOpenChange={(o) => !o && setOpenAction(null)}
+          userId={user.id}
+          wallets={wallets.filter((w) => ["NGN", "USD", "USDT"].includes(w.currency)) as any}
+          onCreated={() => {
+            setTxRefreshKey((k) => k + 1);
+            reloadWallets();
+          }}
+        />
+      )}
+
       {/* Other Quick Action placeholders */}
       <Dialog
-        open={openAction !== null && openAction !== "fund"}
+        open={openAction !== null && openAction !== "fund" && openAction !== "withdraw"}
         onOpenChange={(o) => !o && setOpenAction(null)}
       >
         <DialogContent className="bg-[hsl(220,30%,12%)] border-white/10 text-white">
-          {openAction && openAction !== "fund" && (
+          {openAction && openAction !== "fund" && openAction !== "withdraw" && (
             <>
               <DialogHeader>
                 <DialogTitle className="text-white">{actionCopy[openAction].title}</DialogTitle>
