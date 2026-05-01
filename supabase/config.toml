@@ -1,1 +1,4 @@
 project_id = "dpxmzkbyurynrodvxavv"
+
+[functions.trading-coach]
+verify_jwt = true

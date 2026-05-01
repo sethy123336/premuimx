@@ -14,6 +14,7 @@ import Wallet from "./pages/Wallet.tsx";
 import WalletDetail from "./pages/WalletDetail.tsx";
 import FundDeriv from "./pages/FundDeriv.tsx";
 import Journal from "./pages/Journal.tsx";
+import AI from "./pages/AI.tsx";
 import { AuthProvider } from "./hooks/useAuth";
 import ProtectedRoute from "./components/ProtectedRoute";
 
@@ -69,6 +70,14 @@ const App = () => (
               element={
                 <ProtectedRoute>
                   <Journal />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/ai"
+              element={
+                <ProtectedRoute>
+                  <AI />
                 </ProtectedRoute>
               }
             />
