@@ -134,6 +134,66 @@ export type Database = {
         }
         Relationships: []
       }
+      trade_journal_entries: {
+        Row: {
+          created_at: string
+          direction: string
+          emotion_rating: number | null
+          entry_price: number | null
+          exit_price: number | null
+          id: string
+          instrument: string
+          notes: string | null
+          outcome: string
+          pnl_amount: number
+          pnl_currency: string
+          position_size: number | null
+          screenshot_url: string | null
+          strategy: string | null
+          trade_date: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          direction: string
+          emotion_rating?: number | null
+          entry_price?: number | null
+          exit_price?: number | null
+          id?: string
+          instrument: string
+          notes?: string | null
+          outcome?: string
+          pnl_amount?: number
+          pnl_currency?: string
+          position_size?: number | null
+          screenshot_url?: string | null
+          strategy?: string | null
+          trade_date: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          direction?: string
+          emotion_rating?: number | null
+          entry_price?: number | null
+          exit_price?: number | null
+          id?: string
+          instrument?: string
+          notes?: string | null
+          outcome?: string
+          pnl_amount?: number
+          pnl_currency?: string
+          position_size?: number | null
+          screenshot_url?: string | null
+          strategy?: string | null
+          trade_date?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       transactions: {
         Row: {
           amount: number
