@@ -1,4 +1,6 @@
 import { Wallet, Bitcoin, BrainCircuit, BarChart3 } from "lucide-react";
+import Autoplay from "embla-carousel-autoplay";
+import { useRef } from "react";
 import {
   Carousel,
   CarouselContent,
@@ -39,6 +41,10 @@ const services = [
 ];
 
 const WhatWeDoSection = () => {
+  const autoplay = useRef(
+    Autoplay({ delay: 3000, stopOnInteraction: false, stopOnMouseEnter: true })
+  );
+
   return (
     <section id="services" className="w-full px-6 py-20 bg-secondary">
       <div className="max-w-5xl mx-auto">
@@ -47,6 +53,7 @@ const WhatWeDoSection = () => {
         </h2>
         <Carousel
           opts={{ align: "start", loop: true }}
+          plugins={[autoplay.current]}
           className="w-full"
         >
           <CarouselContent className="-ml-4">
@@ -61,7 +68,7 @@ const WhatWeDoSection = () => {
                   <div className={`mb-5 ${service.iconColor}`}>
                     <service.icon size={40} strokeWidth={1.5} />
                   </div>
-                  <h3 className="text-lg font-bold text-foreground leading-snug">
+                  <h3 className="text-lg font-bold text-secondary-foreground leading-snug">
                     {service.title}
                   </h3>
                 </div>
