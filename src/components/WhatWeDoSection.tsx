@@ -40,9 +40,9 @@ const services = [
 
 const WhatWeDoSection = () => {
   return (
-    <section id="services" className="w-full px-6 py-20 bg-background">
+    <section id="services" className="w-full px-6 py-20 bg-secondary">
       <div className="max-w-5xl mx-auto">
-        <h2 className="text-3xl md:text-4xl font-bold text-foreground text-center mb-12">
+        <h2 className="text-3xl md:text-4xl font-bold text-secondary-foreground text-center mb-12">
           What We Do
         </h2>
         <Carousel
