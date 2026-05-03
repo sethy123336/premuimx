@@ -6,17 +6,18 @@ import WhyChooseSection from "@/components/WhyChooseSection";
 import FAQSection from "@/components/FAQSection";
 import Footer from "@/components/Footer";
 import CTABanner from "@/components/CTABanner";
+import Reveal from "@/components/Reveal";
 
 const Index = () => {
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
       <HeroSection />
-      <AboutSection />
-      <WhatWeDoSection />
-      <WhyChooseSection />
-      <FAQSection />
-      <CTABanner />
+      <Reveal><AboutSection /></Reveal>
+      <Reveal><WhatWeDoSection /></Reveal>
+      <Reveal><WhyChooseSection /></Reveal>
+      <Reveal><FAQSection /></Reveal>
+      <Reveal><CTABanner /></Reveal>
       <Footer />
     </div>
   );
