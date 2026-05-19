@@ -49,7 +49,7 @@ const actionCopy: Record<Exclude<ActionKey, "fund" | "withdraw" | "convert">, { 
 };
 
 const Dashboard = () => {
-  const navigate = useNavigate();
+  
   const { user } = useAuth();
   
   const [wallets, setWallets] = useState<WalletRow[]>([]);
