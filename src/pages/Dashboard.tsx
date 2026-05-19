@@ -184,7 +184,7 @@ const Dashboard = () => {
       </div>
 
       {/* Recent Activity */}
-      {user && <TransactionsList userId={user.id} refreshKey={txRefreshKey} />}
+      {user && <TransactionsList userId={user.id} refreshKey={txRefreshKey} showFilters />}
 
       <div className="flex-1" />
 
