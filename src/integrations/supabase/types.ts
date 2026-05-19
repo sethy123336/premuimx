@@ -162,30 +162,45 @@ export type Database = {
       }
       profiles: {
         Row: {
+          country: string | null
+          country_code: string | null
           created_at: string
+          currency: string | null
           email: string | null
+          email_verified: boolean
           id: string
           phone: string | null
+          phone_verified: boolean
           referral_code: string | null
           updated_at: string
           user_id: string
           username: string | null
         }
         Insert: {
+          country?: string | null
+          country_code?: string | null
           created_at?: string
+          currency?: string | null
           email?: string | null
+          email_verified?: boolean
           id?: string
           phone?: string | null
+          phone_verified?: boolean
           referral_code?: string | null
           updated_at?: string
           user_id: string
           username?: string | null
         }
         Update: {
+          country?: string | null
+          country_code?: string | null
           created_at?: string
+          currency?: string | null
           email?: string | null
+          email_verified?: boolean
           id?: string
           phone?: string | null
+          phone_verified?: boolean
           referral_code?: string | null
           updated_at?: string
           user_id?: string
