@@ -1,15 +1,16 @@
 const AboutSection = () => {
   return (
-    <section id="about" className="w-full px-6 py-20 bg-background">
+    <section id="about" className="w-full px-6 py-24 bg-background">
       <div className="max-w-4xl mx-auto text-center">
-        <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-6">
-          About PremiumX
+        <p className="text-xs font-semibold text-primary uppercase tracking-widest mb-3">About</p>
+        <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-6 tracking-tight">
+          One platform. Every move.
         </h2>
-        <p className="text-lg md:text-xl text-muted-foreground leading-relaxed mb-6">
-          PremiumX is a unified platform built for traders to manage everything in one place — funding trading accounts, handling crypto assets, accessing AI insights and tracking performance.
+        <p className="text-base md:text-lg text-muted-foreground leading-relaxed mb-6">
+          PremiumX brings funding, crypto, AI insights and trade tracking into a single dashboard built for serious traders.
         </p>
-        <p className="text-lg md:text-xl text-muted-foreground leading-relaxed">
-          It removes the need for multiple tools by combining trading operations, payments and analysis into a single dashboard.
+        <p className="text-base md:text-lg text-muted-foreground leading-relaxed">
+          No more juggling exchanges, brokers and bank apps — manage your trading life from one place.
         </p>
       </div>
     </section>
