@@ -46,18 +46,29 @@ const formatDate = (iso: string) => {
   return d.toLocaleDateString("en-US", { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" });
 };
 
+type FilterKey = "all" | "completed" | "pending" | "failed";
+
+const FILTERS: { key: FilterKey; label: string }[] = [
+  { key: "all", label: "All" },
+  { key: "completed", label: "Successful" },
+  { key: "pending", label: "Pending" },
+  { key: "failed", label: "Failed" },
+];
+
 interface TransactionsListProps {
   userId: string;
   refreshKey?: number;
   currency?: Currency;
   limit?: number;
   hideHeader?: boolean;
+  showFilters?: boolean;
   className?: string;
 }
 
-const TransactionsList = ({ userId, refreshKey = 0, currency, limit = 10, hideHeader = false, className }: TransactionsListProps) => {
+const TransactionsList = ({ userId, refreshKey = 0, currency, limit = 10, hideHeader = false, showFilters = false, className }: TransactionsListProps) => {
   const [rows, setRows] = useState<TxRow[]>([]);
   const [loading, setLoading] = useState(true);
+  const [filter, setFilter] = useState<FilterKey>("all");
 
   useEffect(() => {
     let cancelled = false;
@@ -79,15 +90,33 @@ const TransactionsList = ({ userId, refreshKey = 0, currency, limit = 10, hideHe
     };
   }, [userId, refreshKey, currency, limit]);
 
+  const filtered = filter === "all" ? rows : rows.filter((r) => r.status === filter);
+
   return (
     <div className={className ?? "px-5 pt-6 pb-4"}>
       {!hideHeader && <p className="text-base font-semibold mb-3">Recent Activity</p>}
+
+      {showFilters && (
+        <div className="flex gap-1 mb-3 bg-[hsl(220,30%,10%)] p-1 rounded-xl border border-white/5">
+          {FILTERS.map((f) => (
+            <button
+              key={f.key}
+              onClick={() => setFilter(f.key)}
+              className={`flex-1 text-xs font-medium py-1.5 rounded-lg transition-colors ${
+                filter === f.key ? "bg-amber-400 text-black" : "text-white/60 hover:text-white"
+              }`}
+            >
+              {f.label}
+            </button>
+          ))}
+        </div>
+      )}
 
       {loading ? (
         <div className="flex items-center justify-center py-8">
           <Loader2 className="w-5 h-5 animate-spin text-white/40" />
         </div>
-      ) : rows.length === 0 ? (
+      ) : filtered.length === 0 ? (
         <div className="bg-[hsl(220,30%,12%)] border border-white/5 rounded-2xl py-8 px-4 flex flex-col items-center text-center">
           <Receipt className="w-8 h-8 text-white/20 mb-2" />
           <p className="text-sm text-white/60">No transactions yet</p>
@@ -95,7 +124,7 @@ const TransactionsList = ({ userId, refreshKey = 0, currency, limit = 10, hideHe
         </div>
       ) : (
         <div className="space-y-2">
-          {rows.map((tx) => {
+          {filtered.map((tx) => {
             const meta = typeMeta[tx.type];
             const Icon = meta.icon;
             const isOut = tx.type === "withdrawal" || tx.type === "transfer" || tx.type === "deriv_funding";
