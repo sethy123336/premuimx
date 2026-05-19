@@ -50,7 +50,7 @@ const actionCopy: Record<Exclude<ActionKey, "fund" | "withdraw" | "convert">, { 
 
 const Dashboard = () => {
   const navigate = useNavigate();
-  const { user, signOut } = useAuth();
+  const { user } = useAuth();
   
   const [wallets, setWallets] = useState<WalletRow[]>([]);
   const [loading, setLoading] = useState(true);
