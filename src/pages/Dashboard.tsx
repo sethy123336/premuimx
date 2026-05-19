@@ -104,10 +104,6 @@ const Dashboard = () => {
 
   const greetingName = username || user?.email?.split("@")[0] || "trader";
 
-  const handleSignOut = async () => {
-    await signOut();
-    navigate("/login");
-  };
 
   return (
     <div className="min-h-screen bg-[hsl(220,40%,7%)] text-white flex flex-col">
