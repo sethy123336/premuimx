@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { useNavigate } from "react-router-dom";
+
 import { Bell, Wallet, ArrowDownToLine, ArrowUpFromLine, Repeat, Send, Loader2 } from "lucide-react";
 import BottomNav from "@/components/dashboard/BottomNav";
 import DrawerMenu from "@/components/dashboard/DrawerMenu";
