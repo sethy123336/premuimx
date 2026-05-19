@@ -113,57 +113,58 @@ const Dashboard = () => {
     <div className="min-h-screen bg-[hsl(220,40%,7%)] text-white flex flex-col">
       {/* Top Bar */}
       <div className="flex items-center justify-between px-5 pt-6 pb-2">
-        <Menu className="w-6 h-6 text-white/70" />
+        <DrawerMenu username={username} email={user?.email ?? undefined} />
         <div className="flex items-center gap-3">
-          <button onClick={handleSignOut} aria-label="Sign out" className="text-white/70 hover:text-white transition-colors">
-            <LogOut className="w-5 h-5" />
+          <button className="relative text-white/70 hover:text-white" aria-label="Notifications">
+            <Bell className="w-6 h-6" />
+            <span className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full text-[10px] flex items-center justify-center font-bold text-white">1</span>
           </button>
-          <div className="relative">
-            <Bell className="w-6 h-6 text-white/70" />
-            <span className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full text-[10px] flex items-center justify-center font-bold">1</span>
-          </div>
-          <div className="w-9 h-9 rounded-full overflow-hidden border-2 border-purple-400">
+          <div className="w-9 h-9 rounded-full overflow-hidden border-2 border-amber-400">
             <img src={logo} alt="Profile" className="w-full h-full object-cover" />
           </div>
         </div>
       </div>
 
       {/* Welcome */}
-      <div className="px-5 pt-4 pb-2">
+      <div className="px-5 pt-3 pb-2">
         <h1 className="text-2xl font-bold">
           Hello, <span className="text-amber-400 capitalize">{greetingName}</span>
         </h1>
         <p className="text-sm text-white/50 mt-1">Here's your trading overview</p>
       </div>
 
-      {/* Wallet Balances */}
-      <div className="px-5 pt-4">
-        <div className="flex items-center gap-2 mb-4">
-          <Wallet className="w-5 h-5 text-white/80" />
-          <span className="text-base font-semibold">Wallet Balances</span>
+      {/* Main Balance Card */}
+      <MainBalanceCard wallets={wallets.map((w) => ({ currency: w.currency, balance: Number(w.balance) }))} loading={loading} />
+
+      {/* Live Rates */}
+      <div className="pt-4">
+        <DashboardRatesStrip />
+      </div>
+
+      {/* Per-currency Wallet Balances */}
+      <div className="px-5 pt-5">
+        <div className="flex items-center gap-2 mb-3">
+          <Wallet className="w-4 h-4 text-white/60" />
+          <span className="text-sm font-semibold text-white/80">My Wallets</span>
         </div>
 
-        <div className="space-y-3">
-          {loading ? (
-            <div className="flex items-center justify-center py-10">
-              <Loader2 className="w-5 h-5 animate-spin text-white/40" />
-            </div>
-          ) : (
-            displayWallets.map((card) => (
+        {loading ? (
+          <div className="flex items-center justify-center py-6">
+            <Loader2 className="w-5 h-5 animate-spin text-white/40" />
+          </div>
+        ) : (
+          <div className="grid grid-cols-3 gap-2">
+            {displayWallets.map((card) => (
               <div
                 key={card.currency}
-                className="bg-[hsl(220,30%,12%)] rounded-2xl px-5 py-4 flex items-center justify-between border border-white/5"
+                className="bg-[hsl(220,30%,12%)] rounded-2xl px-3 py-3 border border-white/5"
               >
-                <div>
-                  <p className="text-xs text-white/50 mb-1">{card.currency}</p>
-                  <p className="text-2xl font-bold tracking-tight">{formatBalance(card.currency, card.balance)}</p>
-                  <p className="text-xs mt-1 text-white/40">Available</p>
-                </div>
-                <DollarSign className="w-10 h-10 text-white/10" />
+                <p className="text-[10px] text-white/50 mb-1 uppercase tracking-wider">{card.currency}</p>
+                <p className="text-base font-bold tracking-tight tabular-nums truncate">{formatBalance(card.currency, card.balance)}</p>
               </div>
-            ))
-          )}
-        </div>
+            ))}
+          </div>
+        )}
       </div>
 
       {/* Quick Actions */}
