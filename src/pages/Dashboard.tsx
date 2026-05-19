@@ -1,7 +1,10 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Menu, Bell, DollarSign, Wallet, ArrowDownToLine, ArrowUpFromLine, Repeat, Send, LogOut, Loader2 } from "lucide-react";
+import { Bell, Wallet, ArrowDownToLine, ArrowUpFromLine, Repeat, Send, Loader2 } from "lucide-react";
 import BottomNav from "@/components/dashboard/BottomNav";
+import DrawerMenu from "@/components/dashboard/DrawerMenu";
+import MainBalanceCard from "@/components/dashboard/MainBalanceCard";
+import DashboardRatesStrip from "@/components/dashboard/DashboardRatesStrip";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "@/hooks/use-toast";
