@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Eye, EyeOff, Loader2 } from "lucide-react";
+import { ArrowRight, ArrowLeft, Check, Loader2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import {
@@ -13,49 +13,70 @@ import {
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 import { COUNTRIES, Country, DEFAULT_COUNTRY, detectCountry } from "@/lib/countries";
-import logo from "@/assets/logo.png";
+
+type Step = 1 | 2 | 3;
+
+const passwordStrength = (p: string) => {
+  let s = 0;
+  if (p.length >= 8) s++;
+  if (/[A-Z]/.test(p)) s++;
+  if (/[0-9]/.test(p)) s++;
+  if (/[^A-Za-z0-9]/.test(p)) s++;
+  return s; // 0..4
+};
+
+const strengthLabel = ["Too short", "Weak", "Fair", "Good", "Strong"];
+const strengthColor = ["bg-white/10", "bg-red-500", "bg-amber-500", "bg-amber-400", "bg-emerald-500"];
 
 const Signup = () => {
   const navigate = useNavigate();
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirm, setShowConfirm] = useState(false);
+  const [step, setStep] = useState<Step>(1);
   const [loading, setLoading] = useState(false);
   const [country, setCountry] = useState<Country>(DEFAULT_COUNTRY);
-  const [form, setForm] = useState({
-    username: "",
-    email: "",
-    phone: "",
-    password: "",
-    confirm: "",
-    referral: "",
-  });
+  const [form, setForm] = useState({ username: "", email: "", phone: "", password: "", confirm: "" });
 
-  // Auto-detect country on mount
+  // OTP state
+  const [otp, setOtp] = useState(["", "", "", "", "", ""]);
+  const [resendIn, setResendIn] = useState(60);
+  const otpRefs = useRef<(HTMLInputElement | null)[]>([]);
+
+  useEffect(() => { detectCountry().then((c) => c && setCountry(c)); }, []);
+
   useEffect(() => {
-    detectCountry().then((c) => c && setCountry(c));
-  }, []);
+    if (step !== 3) return;
+    setResendIn(60);
+    const id = setInterval(() => setResendIn((s) => (s > 0 ? s - 1 : 0)), 1000);
+    return () => clearInterval(id);
+  }, [step]);
 
-  const handleChange = (field: string, value: string) => {
-    setForm((prev) => ({ ...prev, [field]: value }));
+  const strength = useMemo(() => passwordStrength(form.password), [form.password]);
+
+  const goStep1 = () => {
+    if (!form.username.trim()) return toast({ title: "Enter a username", variant: "destructive" });
+    if (!/^\S+@\S+\.\S+$/.test(form.email)) return toast({ title: "Enter a valid email", variant: "destructive" });
+    if (!form.phone.trim()) return toast({ title: "Enter your phone number", variant: "destructive" });
+    setStep(2);
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const goStep2 = () => {
+    if (form.password.length < 8) return toast({ title: "Password too short", description: "Min 8 characters.", variant: "destructive" });
+    if (form.password !== form.confirm) return toast({ title: "Passwords don't match", variant: "destructive" });
+    setStep(3);
+  };
+
+  const handleOtpChange = (i: number, v: string) => {
+    const ch = v.replace(/\D/g, "").slice(-1);
+    setOtp((arr) => { const next = [...arr]; next[i] = ch; return next; });
+    if (ch && i < 5) otpRefs.current[i + 1]?.focus();
+  };
+
+  const handleOtpKey = (i: number, e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Backspace" && !otp[i] && i > 0) otpRefs.current[i - 1]?.focus();
+  };
+
+  const handleCreate = async () => {
+    if (otp.join("").length !== 6) return toast({ title: "Enter the 6-digit OTP", variant: "destructive" });
     if (loading) return;
-
-    if (!form.username || !form.email || !form.password) {
-      toast({ title: "Missing information", description: "Username, email and password are required.", variant: "destructive" });
-      return;
-    }
-    if (form.password.length < 8) {
-      toast({ title: "Weak password", description: "Use at least 8 characters.", variant: "destructive" });
-      return;
-    }
-    if (form.password !== form.confirm) {
-      toast({ title: "Passwords don't match", description: "Re-enter your password to confirm.", variant: "destructive" });
-      return;
-    }
-
     setLoading(true);
     const { error } = await supabase.auth.signUp({
       email: form.email,
@@ -64,8 +85,7 @@ const Signup = () => {
         emailRedirectTo: `${window.location.origin}/dashboard`,
         data: {
           username: form.username,
-          phone: form.phone ? `${country.dialCode}${form.phone.replace(/^0+/, "")}` : null,
-          referral_code: form.referral || null,
+          phone: `${country.dialCode}${form.phone.replace(/^0+/, "")}`,
           country: country.name,
           country_code: country.code,
           currency: country.currency,
@@ -73,151 +93,151 @@ const Signup = () => {
       },
     });
     setLoading(false);
-
-    if (error) {
-      toast({ title: "Signup failed", description: error.message, variant: "destructive" });
-      return;
-    }
-
-    toast({
-      title: "Check your email",
-      description: "We sent a confirmation link to verify your account.",
-    });
-    navigate("/login");
+    if (error) return toast({ title: "Signup failed", description: error.message, variant: "destructive" });
+    toast({ title: "Account created", description: "Welcome to PremiumX!" });
+    navigate("/dashboard");
   };
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
-      <div className="px-6 py-5">
-        <Link to="/" className="flex items-center gap-2">
-          <img src={logo} alt="PremiumX" className="w-8 h-8 rounded-lg" />
-          <span className="text-xl font-bold text-foreground tracking-tight">PremiumX</span>
-        </Link>
+    <div className="min-h-[100dvh] bg-[hsl(220,40%,7%)] text-white flex flex-col px-5 py-8">
+      <div className="text-center mb-5">
+        <h1 className="text-3xl font-extrabold text-amber-400 tracking-tight">PremiumX</h1>
+        <p className="text-sm text-white/60 mt-1">Create your account</p>
+        <div className="flex justify-center gap-1.5 mt-3">
+          {[1, 2, 3].map((n) => (
+            <span key={n} className={`h-1 w-10 rounded-full ${n <= step ? "bg-amber-500" : "bg-white/15"}`} />
+          ))}
+        </div>
       </div>
 
-      <div className="flex-1 flex items-start justify-center px-6 pb-10">
-        <div className="w-full max-w-md">
-          <h1 className="text-3xl font-bold text-foreground mb-2">Create your account</h1>
-          <p className="text-muted-foreground mb-8">
-            Trade, fund and grow — your currency is set automatically.
-          </p>
+      <div className="w-full max-w-md mx-auto bg-[hsl(220,30%,10%)] border border-white/5 rounded-2xl p-5">
+        {step === 1 && (
+          <div className="space-y-4">
+            <h2 className="text-base font-bold">Personal info</h2>
 
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <Input
-              placeholder="Username"
-              value={form.username}
-              onChange={(e) => handleChange("username", e.target.value)}
-              className="h-14 rounded-xl border-border bg-surface text-foreground placeholder:text-muted-foreground/60 px-4"
-            />
+            <div>
+              <label className="text-xs text-white/70 mb-1.5 block">Username</label>
+              <Input value={form.username} onChange={(e) => setForm({ ...form, username: e.target.value })} placeholder="daniel_fx" maxLength={30} className="h-12 rounded-xl bg-[hsl(220,30%,14%)] border-white/10 text-white" />
+            </div>
 
-            <Input
-              type="email"
-              placeholder="Email Address"
-              value={form.email}
-              onChange={(e) => handleChange("email", e.target.value)}
-              className="h-14 rounded-xl border-border bg-surface text-foreground placeholder:text-muted-foreground/60 px-4"
-            />
+            <div>
+              <label className="text-xs text-white/70 mb-1.5 block">Email Address</label>
+              <Input type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} placeholder="daniel@example.com" className="h-12 rounded-xl bg-[hsl(220,30%,14%)] border-white/10 text-white" />
+            </div>
 
-            {/* Country */}
-            <Select value={country.code} onValueChange={(v) => {
-              const c = COUNTRIES.find((x) => x.code === v);
-              if (c) setCountry(c);
-            }}>
-              <SelectTrigger className="h-14 rounded-xl border-border bg-surface text-foreground px-4">
-                <SelectValue>
-                  <span className="flex items-center gap-2">
-                    <span className="text-base">{country.flag}</span>
-                    <span className="text-sm">{country.name}</span>
-                    <span className="text-xs text-muted-foreground">· {country.currency}</span>
-                  </span>
-                </SelectValue>
-              </SelectTrigger>
-              <SelectContent className="bg-surface-elevated border-border max-h-72">
-                {COUNTRIES.map((c) => (
-                  <SelectItem key={c.code} value={c.code} className="text-foreground">
+            <div>
+              <label className="text-xs text-white/70 mb-1.5 block">Country</label>
+              <Select value={country.code} onValueChange={(code) => setCountry(COUNTRIES.find((c) => c.code === code) ?? country)}>
+                <SelectTrigger className="h-12 rounded-xl bg-[hsl(220,30%,14%)] border-white/10 text-white">
+                  <SelectValue>
                     <span className="flex items-center gap-2">
-                      <span>{c.flag}</span>
-                      <span>{c.name}</span>
-                      <span className="text-xs text-muted-foreground">· {c.currency}</span>
+                      <span className="px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300 text-[10px] font-bold">{country.code}</span>
+                      <span>{country.name} — {country.currency} auto-set</span>
                     </span>
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+                  </SelectValue>
+                </SelectTrigger>
+                <SelectContent className="bg-[hsl(220,30%,12%)] border-white/10 text-white max-h-72">
+                  {COUNTRIES.map((c) => (
+                    <SelectItem key={c.code} value={c.code}>
+                      {c.flag ?? c.code} {c.name} ({c.currency})
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
 
-            {/* Phone with country code */}
-            <div className="flex items-center h-14 rounded-xl border border-border bg-surface overflow-hidden">
-              <div className="flex items-center gap-2 pl-4 pr-3 border-r border-border shrink-0">
-                <span className="text-base">{country.flag}</span>
-                <span className="text-sm text-foreground font-medium">{country.dialCode}</span>
+            <div>
+              <label className="text-xs text-white/70 mb-1.5 block">Phone Number</label>
+              <div className="flex gap-2">
+                <div className="flex items-center px-3 h-12 rounded-xl bg-[hsl(220,30%,14%)] border border-white/10 text-sm font-medium">
+                  {country.dialCode}
+                </div>
+                <Input value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value.replace(/\D/g, "") })} placeholder="0801 234 5678" inputMode="numeric" maxLength={15} className="h-12 rounded-xl bg-[hsl(220,30%,14%)] border-white/10 text-white flex-1" />
               </div>
-              <input
-                type="tel"
-                placeholder="Phone Number"
-                value={form.phone}
-                onChange={(e) => handleChange("phone", e.target.value)}
-                className="flex-1 h-full bg-transparent px-4 text-foreground placeholder:text-muted-foreground/60 outline-none text-sm"
-              />
             </div>
 
-            <div className="relative">
-              <Input
-                type={showPassword ? "text" : "password"}
-                placeholder="Password"
-                value={form.password}
-                onChange={(e) => handleChange("password", e.target.value)}
-                className="h-14 rounded-xl border-border bg-surface text-foreground placeholder:text-muted-foreground/60 px-4 pr-12"
-              />
-              <button
-                type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
-              >
-                {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
-              </button>
-            </div>
-
-            <div className="relative">
-              <Input
-                type={showConfirm ? "text" : "password"}
-                placeholder="Confirm Password"
-                value={form.confirm}
-                onChange={(e) => handleChange("confirm", e.target.value)}
-                className="h-14 rounded-xl border-border bg-surface text-foreground placeholder:text-muted-foreground/60 px-4 pr-12"
-              />
-              <button
-                type="button"
-                onClick={() => setShowConfirm(!showConfirm)}
-                className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
-              >
-                {showConfirm ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
-              </button>
-            </div>
-
-            <Input
-              placeholder="Referral Code (Optional)"
-              value={form.referral}
-              onChange={(e) => handleChange("referral", e.target.value)}
-              className="h-14 rounded-xl border-border bg-surface text-foreground placeholder:text-muted-foreground/60 px-4"
-            />
-
-            <Button
-              type="submit"
-              disabled={loading}
-              className="w-full h-14 rounded-xl text-base font-semibold mt-2 bg-primary text-primary-foreground hover:bg-primary-glow shadow-glow"
-              size="lg"
-            >
-              {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : "Create Account"}
+            <Button onClick={goStep1} className="w-full h-12 rounded-xl bg-[hsl(220,30%,14%)] hover:bg-[hsl(220,30%,18%)] border border-white/10 text-white font-semibold">
+              Continue <ArrowRight className="w-4 h-4 ml-1.5" />
             </Button>
-          </form>
+          </div>
+        )}
 
-          <p className="text-center text-sm text-muted-foreground mt-6">
-            Already have an account?{" "}
-            <Link to="/login" className="text-primary font-medium hover:underline">
-              Log in
-            </Link>
-          </p>
-        </div>
+        {step === 2 && (
+          <div className="space-y-4">
+            <h2 className="text-base font-bold">Set your password</h2>
+
+            <div>
+              <label className="text-xs text-white/70 mb-1.5 block">Password</label>
+              <Input type="password" value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} placeholder="Min. 8 characters" className="h-12 rounded-xl bg-[hsl(220,30%,14%)] border-white/10 text-white" />
+            </div>
+
+            <div>
+              <label className="text-xs text-white/70 mb-1.5 block">Confirm Password</label>
+              <Input type="password" value={form.confirm} onChange={(e) => setForm({ ...form, confirm: e.target.value })} placeholder="Re-enter password" className="h-12 rounded-xl bg-[hsl(220,30%,14%)] border-white/10 text-white" />
+            </div>
+
+            <div className="rounded-xl bg-[hsl(220,30%,14%)] border border-white/5 p-3">
+              <p className="text-xs text-white/70 mb-2">Password strength</p>
+              <div className="h-1.5 rounded-full bg-white/10 overflow-hidden">
+                <div className={`h-full ${strengthColor[strength]} transition-all`} style={{ width: `${(strength / 4) * 100}%` }} />
+              </div>
+              <p className={`text-xs mt-1.5 font-semibold ${strength >= 3 ? "text-emerald-400" : strength === 2 ? "text-amber-400" : "text-red-400"}`}>
+                {form.password ? strengthLabel[strength] : ""}
+              </p>
+            </div>
+
+            <Button onClick={goStep2} className="w-full h-12 rounded-xl bg-[hsl(220,30%,14%)] hover:bg-[hsl(220,30%,18%)] border border-white/10 text-white font-semibold">
+              Continue <ArrowRight className="w-4 h-4 ml-1.5" />
+            </Button>
+            <Button onClick={() => setStep(1)} variant="outline" className="w-full h-12 rounded-xl bg-transparent hover:bg-white/5 border-white/10 text-white font-semibold">
+              <ArrowLeft className="w-4 h-4 mr-1.5" /> Back
+            </Button>
+          </div>
+        )}
+
+        {step === 3 && (
+          <div className="space-y-4 text-center">
+            <h2 className="text-base font-bold">Verify your email</h2>
+            <p className="text-xs text-white/60">A 6-digit OTP was sent to {form.email}</p>
+
+            <div className="flex justify-center gap-2">
+              {otp.map((d, i) => (
+                <input
+                  key={i}
+                  ref={(el) => (otpRefs.current[i] = el)}
+                  value={d}
+                  onChange={(e) => handleOtpChange(i, e.target.value)}
+                  onKeyDown={(e) => handleOtpKey(i, e)}
+                  inputMode="numeric"
+                  maxLength={1}
+                  className="w-11 h-12 rounded-xl bg-[hsl(220,30%,14%)] border border-white/10 text-center text-lg font-bold text-white outline-none focus:border-amber-500"
+                />
+              ))}
+            </div>
+
+            <Button onClick={handleCreate} disabled={loading} className="w-full h-12 rounded-xl bg-[hsl(220,30%,14%)] hover:bg-[hsl(220,30%,18%)] border border-white/10 text-white font-semibold">
+              {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : (<><Check className="w-4 h-4 mr-1.5" /> Create Account</>)}
+            </Button>
+
+            <p className="text-xs text-white/60">
+              {resendIn > 0 ? (
+                <>Resend OTP in <span className="text-amber-400 font-semibold">0:{String(resendIn).padStart(2, "0")}</span></>
+              ) : (
+                <button onClick={() => { setResendIn(60); toast({ title: "OTP resent" }); }} className="text-amber-400 font-semibold hover:underline">Resend OTP</button>
+              )}
+            </p>
+          </div>
+        )}
+      </div>
+
+      <p className="text-center text-sm text-white/60 mt-5">
+        Already have an account? <Link to="/login" className="text-amber-400 font-medium hover:underline">Log in</Link>
+      </p>
+
+      <div className="flex justify-center mt-4">
+        <Link to="/" className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[hsl(220,30%,12%)] border border-white/10 text-sm text-white/80 hover:bg-[hsl(220,30%,16%)]">
+          <ArrowLeft className="w-4 h-4" /> Back to home
+        </Link>
       </div>
     </div>
   );
