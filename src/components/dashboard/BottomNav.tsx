@@ -1,13 +1,13 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import { Grid2X2, Wallet, Monitor, BookOpen, Bot } from "lucide-react";
+import { Home, Wallet, Landmark, Brain } from "lucide-react";
 
 const tabs = [
-  { icon: Grid2X2, label: "Dashboard", path: "/dashboard" },
-  { icon: Wallet, label: "Wallet", path: "/wallet" },
-  { icon: Monitor, label: "Fund Deriv", path: "/fund-deriv" },
-  { icon: BookOpen, label: "Journal", path: "/journal" },
-  { icon: Bot, label: "AI", path: "/ai" },
+  { icon: Home, label: "Home", path: "/dashboard" },
+  { icon: Wallet, label: "Wallets", path: "/wallet" },
+  { icon: Landmark, label: "Fund", path: "/fund-deriv" },
+  { icon: Brain, label: "AI", path: "/ai" },
 ];
+
 
 const BottomNav = () => {
   const navigate = useNavigate();
