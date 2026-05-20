@@ -113,10 +113,10 @@ const Dashboard = () => {
 
 
   return (
-    <div className="min-h-[100dvh] bg-[hsl(220,40%,7%)] text-white flex flex-col overflow-x-hidden">
-      {/* Top Bar */}
+    <div className="h-[100dvh] bg-[hsl(220,40%,7%)] text-white flex flex-col overflow-hidden">
+      {/* Top Bar (fixed) */}
       <div
-        className="flex items-center justify-between px-5 pb-2"
+        className="flex-shrink-0 flex items-center justify-between px-5 pb-2 bg-[hsl(220,40%,7%)]"
         style={{ paddingTop: "calc(1rem + env(safe-area-inset-top))" }}
       >
         <DrawerMenu username={username} email={user?.email ?? undefined} />
@@ -132,75 +132,80 @@ const Dashboard = () => {
         </div>
       </div>
 
-      {/* Welcome */}
-      <div className="px-5 pt-4 pb-2 flex items-end justify-between">
-        <div>
-          <p className="text-xs text-white/50">Welcome back,</p>
-          <h1 className="text-2xl font-bold capitalize flex items-center gap-2">
-            {greetingName} <span className="text-xl">👋</span>
-          </h1>
-        </div>
-        <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-emerald-500/15 text-emerald-400 text-xs font-semibold">
-          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-          Live
-        </span>
-      </div>
-
-      {/* Main Balance Card */}
-      <MainBalanceCard wallets={wallets.map((w) => ({ currency: w.currency, balance: Number(w.balance) }))} loading={loading} />
-
-      {/* Quick Actions */}
-      <div className="px-5 pt-5 pb-2">
-        <div className="grid grid-cols-4 gap-3">
-          {quickActions.map((a) => {
-            const Icon = a.icon;
-            return (
-              <button
-                key={a.key}
-                onClick={() => setOpenAction(a.key)}
-                className="flex flex-col items-center gap-2 bg-[hsl(220,30%,12%)] border border-white/5 rounded-2xl py-4 hover:bg-[hsl(220,30%,15%)] transition-colors"
-              >
-                <span className={`w-10 h-10 rounded-full flex items-center justify-center ${a.bg} ring-1 ${a.ring}`}>
-                  <Icon className={`w-5 h-5 ${a.iconColor}`} />
-                </span>
-                <span className="text-[11px] font-medium text-white/80">{a.label}</span>
-              </button>
-            );
-          })}
-        </div>
-      </div>
-
-      {/* Live Market Rates */}
-      <div className="px-5 pt-5 pb-2">
-        <p className="text-[11px] uppercase tracking-wider text-white/50 font-semibold mb-2">Live Market Rates</p>
-      </div>
-      <DashboardRatesStrip />
-
-      {/* PremiumX AI Signal */}
-      <div className="px-5 pt-5">
-        <button
-          type="button"
-          className="w-full flex items-center gap-3 bg-[hsl(220,30%,12%)] border border-white/5 rounded-2xl p-4 hover:bg-[hsl(220,30%,15%)] transition-colors text-left"
-        >
-          <span className="w-11 h-11 rounded-xl bg-emerald-500/15 ring-1 ring-emerald-500/20 flex items-center justify-center text-xl">
-            🧠
-          </span>
-          <div className="flex-1 min-w-0">
-            <p className="text-sm font-semibold text-white">PremiumX AI Signal</p>
-            <p className="text-xs text-emerald-300/80 truncate">BTC bullish divergence detected — see full analysis</p>
+      {/* Scrollable inner content */}
+      <div className="flex-1 overflow-y-auto overflow-x-hidden overscroll-contain scrollbar-none">
+        {/* Welcome */}
+        <div className="px-5 pt-4 pb-2 flex items-end justify-between">
+          <div>
+            <p className="text-xs text-white/50">Welcome back,</p>
+            <h1 className="text-2xl font-bold capitalize flex items-center gap-2">
+              {greetingName} <span className="text-xl">👋</span>
+            </h1>
           </div>
-          <span className="text-white/40 text-lg">›</span>
-        </button>
+          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-emerald-500/15 text-emerald-400 text-xs font-semibold">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+            Live
+          </span>
+        </div>
+
+        {/* Main Balance Card */}
+        <MainBalanceCard wallets={wallets.map((w) => ({ currency: w.currency, balance: Number(w.balance) }))} loading={loading} />
+
+        {/* Quick Actions */}
+        <div className="px-5 pt-5 pb-2">
+          <div className="grid grid-cols-4 gap-3">
+            {quickActions.map((a) => {
+              const Icon = a.icon;
+              return (
+                <button
+                  key={a.key}
+                  onClick={() => setOpenAction(a.key)}
+                  className="flex flex-col items-center gap-2 bg-[hsl(220,30%,12%)] border border-white/5 rounded-2xl py-4 hover:bg-[hsl(220,30%,15%)] transition-colors"
+                >
+                  <span className={`w-10 h-10 rounded-full flex items-center justify-center ${a.bg} ring-1 ${a.ring}`}>
+                    <Icon className={`w-5 h-5 ${a.iconColor}`} />
+                  </span>
+                  <span className="text-[11px] font-medium text-white/80">{a.label}</span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Live Market Rates */}
+        <div className="px-5 pt-5 pb-2">
+          <p className="text-[11px] uppercase tracking-wider text-white/50 font-semibold mb-2">Live Market Rates</p>
+        </div>
+        <DashboardRatesStrip />
+
+        {/* PremiumX AI Signal */}
+        <div className="px-5 pt-5">
+          <button
+            type="button"
+            className="w-full flex items-center gap-3 bg-[hsl(220,30%,12%)] border border-white/5 rounded-2xl p-4 hover:bg-[hsl(220,30%,15%)] transition-colors text-left"
+          >
+            <span className="w-11 h-11 rounded-xl bg-emerald-500/15 ring-1 ring-emerald-500/20 flex items-center justify-center text-xl">
+              🧠
+            </span>
+            <div className="flex-1 min-w-0">
+              <p className="text-sm font-semibold text-white">PremiumX AI Signal</p>
+              <p className="text-xs text-emerald-300/80 truncate">BTC bullish divergence detected — see full analysis</p>
+            </div>
+            <span className="text-white/40 text-lg">›</span>
+          </button>
+        </div>
+
+        {/* Recent Activity */}
+        {user && <TransactionsList userId={user.id} refreshKey={txRefreshKey} showFilters />}
+
+        <div className="h-4" />
       </div>
 
+      {/* Bottom Nav (fixed) */}
+      <div className="flex-shrink-0">
+        <BottomNav />
+      </div>
 
-
-      {/* Recent Activity */}
-      {user && <TransactionsList userId={user.id} refreshKey={txRefreshKey} showFilters />}
-
-      <div className="flex-1" />
-
-      <BottomNav />
 
       {/* Fund Modal */}
       {user && (
