@@ -14,7 +14,10 @@ const BottomNav = () => {
   const { pathname } = useLocation();
 
   return (
-    <div className="bg-[hsl(220,30%,10%)] border-t border-white/10 px-2 pb-2 pt-2">
+    <div
+      className="sticky bottom-0 z-40 bg-[hsl(220,30%,10%)] border-t border-white/10 px-2 pt-2"
+      style={{ paddingBottom: "calc(0.5rem + env(safe-area-inset-bottom))" }}
+    >
       <div className="flex justify-around">
         {tabs.map((tab) => {
           const Icon = tab.icon;
