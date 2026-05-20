@@ -130,7 +130,7 @@ const fireAuth = (event: string) => {
 };
 
 const auth = {
-  async signUp({ email, password, options }: { email: string; password: string; options?: { data?: Record<string, any> } }) {
+  async signUp({ email, password, options }: { email: string; password: string; options?: { data?: Record<string, any>; emailRedirectTo?: string } }) {
     if (!email || !password) return { data: null, error: { message: "Email and password required" } };
     if (db._users.find((u) => u.email.toLowerCase() === email.toLowerCase())) {
       return { data: null, error: { message: "An account with that email already exists" } };
