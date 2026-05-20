@@ -173,31 +173,23 @@ const Dashboard = () => {
       </div>
       <DashboardRatesStrip />
 
-      {/* Per-currency Wallet Balances */}
+      {/* PremiumX AI Signal */}
       <div className="px-5 pt-5">
-        <div className="flex items-center gap-2 mb-3">
-          <Wallet className="w-4 h-4 text-white/60" />
-          <span className="text-sm font-semibold text-white/80">My Wallets</span>
-        </div>
-
-        {loading ? (
-          <div className="flex items-center justify-center py-6">
-            <Loader2 className="w-5 h-5 animate-spin text-white/40" />
+        <button
+          type="button"
+          className="w-full flex items-center gap-3 bg-[hsl(220,30%,12%)] border border-white/5 rounded-2xl p-4 hover:bg-[hsl(220,30%,15%)] transition-colors text-left"
+        >
+          <span className="w-11 h-11 rounded-xl bg-emerald-500/15 ring-1 ring-emerald-500/20 flex items-center justify-center text-xl">
+            🧠
+          </span>
+          <div className="flex-1 min-w-0">
+            <p className="text-sm font-semibold text-white">PremiumX AI Signal</p>
+            <p className="text-xs text-emerald-300/80 truncate">BTC bullish divergence detected — see full analysis</p>
           </div>
-        ) : (
-          <div className="grid grid-cols-3 gap-2">
-            {displayWallets.map((card) => (
-              <div
-                key={card.currency}
-                className="bg-[hsl(220,30%,12%)] rounded-2xl px-3 py-3 border border-white/5"
-              >
-                <p className="text-[10px] text-white/50 mb-1 uppercase tracking-wider">{card.currency}</p>
-                <p className="text-base font-bold tracking-tight tabular-nums truncate">{formatBalance(card.currency, card.balance)}</p>
-              </div>
-            ))}
-          </div>
-        )}
+          <span className="text-white/40 text-lg">›</span>
+        </button>
       </div>
+
 
 
       {/* Recent Activity */}
