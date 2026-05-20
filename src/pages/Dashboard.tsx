@@ -115,34 +115,63 @@ const Dashboard = () => {
   return (
     <div className="min-h-screen bg-[hsl(220,40%,7%)] text-white flex flex-col">
       {/* Top Bar */}
-      <div className="flex items-center justify-between px-5 pt-6 pb-2">
+      <div className="flex items-center justify-between px-5 pt-5 pb-2">
         <DrawerMenu username={username} email={user?.email ?? undefined} />
+        <h2 className="text-lg font-bold text-amber-400 tracking-wide">PremiumX</h2>
         <div className="flex items-center gap-3">
           <button className="relative text-white/70 hover:text-white" aria-label="Notifications">
-            <Bell className="w-6 h-6" />
-            <span className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full text-[10px] flex items-center justify-center font-bold text-white">1</span>
+            <Bell className="w-5 h-5" />
+            <span className="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full" />
           </button>
-          <div className="w-9 h-9 rounded-full overflow-hidden border-2 border-amber-400">
-            <img src={logo} alt="Profile" className="w-full h-full object-cover" />
+          <div className="w-9 h-9 rounded-full bg-[hsl(220,30%,18%)] border border-white/10 flex items-center justify-center text-sm font-bold text-amber-300 uppercase">
+            {greetingName.charAt(0)}
           </div>
         </div>
       </div>
 
       {/* Welcome */}
-      <div className="px-5 pt-3 pb-2">
-        <h1 className="text-2xl font-bold">
-          Hello, <span className="text-amber-400 capitalize">{greetingName}</span>
-        </h1>
-        <p className="text-sm text-white/50 mt-1">Here's your trading overview</p>
+      <div className="px-5 pt-4 pb-2 flex items-end justify-between">
+        <div>
+          <p className="text-xs text-white/50">Welcome back,</p>
+          <h1 className="text-2xl font-bold capitalize flex items-center gap-2">
+            {greetingName} <span className="text-xl">👋</span>
+          </h1>
+        </div>
+        <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-emerald-500/15 text-emerald-400 text-xs font-semibold">
+          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+          Live
+        </span>
       </div>
 
       {/* Main Balance Card */}
       <MainBalanceCard wallets={wallets.map((w) => ({ currency: w.currency, balance: Number(w.balance) }))} loading={loading} />
 
-      {/* Live Rates */}
-      <div className="pt-4">
-        <DashboardRatesStrip />
+      {/* Quick Actions */}
+      <div className="px-5 pt-5 pb-2">
+        <div className="grid grid-cols-4 gap-3">
+          {quickActions.map((a) => {
+            const Icon = a.icon;
+            return (
+              <button
+                key={a.key}
+                onClick={() => setOpenAction(a.key)}
+                className="flex flex-col items-center gap-2 bg-[hsl(220,30%,12%)] border border-white/5 rounded-2xl py-4 hover:bg-[hsl(220,30%,15%)] transition-colors"
+              >
+                <span className={`w-10 h-10 rounded-full flex items-center justify-center ${a.bg} ring-1 ${a.ring}`}>
+                  <Icon className={`w-5 h-5 ${a.iconColor}`} />
+                </span>
+                <span className="text-[11px] font-medium text-white/80">{a.label}</span>
+              </button>
+            );
+          })}
+        </div>
       </div>
+
+      {/* Live Market Rates */}
+      <div className="px-5 pt-5 pb-2">
+        <p className="text-[11px] uppercase tracking-wider text-white/50 font-semibold mb-2">Live Market Rates</p>
+      </div>
+      <DashboardRatesStrip />
 
       {/* Per-currency Wallet Balances */}
       <div className="px-5 pt-5">
@@ -170,25 +199,6 @@ const Dashboard = () => {
         )}
       </div>
 
-      {/* Quick Actions */}
-      <div className="px-5 pt-6 pb-2">
-        <p className="text-base font-semibold mb-3">Quick Actions</p>
-        <div className="grid grid-cols-4 gap-3">
-          {quickActions.map((a) => {
-            const Icon = a.icon;
-            return (
-              <button
-                key={a.key}
-                onClick={() => setOpenAction(a.key)}
-                className="flex flex-col items-center gap-2 bg-[hsl(220,30%,12%)] border border-white/5 rounded-2xl py-4 hover:bg-[hsl(220,30%,15%)] transition-colors"
-              >
-                <Icon className={`w-5 h-5 ${a.tone}`} />
-                <span className="text-[11px] font-medium text-white/80">{a.label}</span>
-              </button>
-            );
-          })}
-        </div>
-      </div>
 
       {/* Recent Activity */}
       {user && <TransactionsList userId={user.id} refreshKey={txRefreshKey} showFilters />}
