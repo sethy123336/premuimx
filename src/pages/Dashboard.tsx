@@ -37,11 +37,18 @@ const formatBalance = (currency: Currency, value: number) => {
 
 type ActionKey = "fund" | "withdraw" | "convert" | "send";
 
-const quickActions: { key: ActionKey; icon: typeof ArrowDownToLine; label: string; tone: string }[] = [
-  { key: "fund", icon: ArrowDownToLine, label: "Fund", tone: "text-emerald-400" },
-  { key: "withdraw", icon: ArrowUpFromLine, label: "Withdraw", tone: "text-amber-400" },
-  { key: "convert", icon: Repeat, label: "Convert", tone: "text-sky-400" },
-  { key: "send", icon: Send, label: "Send", tone: "text-purple-400" },
+const quickActions: {
+  key: ActionKey;
+  icon: typeof ArrowDownToLine;
+  label: string;
+  iconColor: string;
+  bg: string;
+  ring: string;
+}[] = [
+  { key: "fund", icon: ArrowDownToLine, label: "Fund", iconColor: "text-emerald-400", bg: "bg-emerald-500/15", ring: "ring-emerald-500/20" },
+  { key: "withdraw", icon: ArrowUpFromLine, label: "Withdraw", iconColor: "text-red-400", bg: "bg-red-500/15", ring: "ring-red-500/20" },
+  { key: "convert", icon: Repeat, label: "Convert", iconColor: "text-amber-400", bg: "bg-amber-500/15", ring: "ring-amber-500/20" },
+  { key: "send", icon: Send, label: "Send", iconColor: "text-sky-400", bg: "bg-sky-500/15", ring: "ring-sky-500/20" },
 ];
 
 const actionCopy: Record<Exclude<ActionKey, "fund" | "withdraw" | "convert">, { title: string; description: string }> = {
