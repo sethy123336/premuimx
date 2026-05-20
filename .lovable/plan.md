@@ -1,138 +1,45 @@
+# Plan: Stub Backend for Frontend Handoff
 
-# PremiumX — Phased Build Plan
+Replace Supabase with in-memory/localStorage mocks so the UI keeps working with fake data, and document the backend contract for your developer.
 
-A staged redesign + feature buildout. Each phase ends in a shippable, testable slice. We confirm scope of each phase before moving to the next.
+## 1. Mock auth layer
+- Rewrite `src/hooks/useAuth.tsx` to use a fake user stored in `localStorage` (no Supabase calls).
+- `signIn` / `signUp` accept any email+password, create a fake user `{ id, email }`, store it, return success.
+- `signOut` clears localStorage.
+- `ProtectedRoute` keeps working unchanged.
 
----
+## 2. Mock data client
+- Create `src/lib/mockData.ts` with seeded wallets, transactions, profile, journal entries, chat messages, deriv accounts.
+- Create `src/lib/mockClient.ts` exposing the same shape currently used (`from('wallets').select()`, `.insert()`, `.eq()`, `.rpc('convert_currency', ...)`, etc.) backed by the mock store + localStorage persistence.
+- Replace `src/integrations/supabase/client.ts` export to point at the mock client so **no call site changes**.
 
-## Phase 0 — Design Foundation (1 step, blocking)
+## 3. Login / Signup / Reset pages
+- Update to call the new mock auth (no Supabase imports). Forms still validate; submission navigates to `/dashboard`.
 
-Lock the visual language before any rebuild so every new screen is consistent.
+## 4. Edge function (`trading-coach`)
+- Replace the `supabase.functions.invoke('trading-coach', ...)` call in the AI page with a mock streaming response (canned reply) so the chat UI still demos.
 
-- Confirm direction: keep current dark navy + DM Sans, or explore a fresh palette/type.
-- Define the 60/30/10 system in `index.css` as semantic tokens (background, surface, surface-elevated, primary, accent, success, danger, muted).
-- Standardize: radii, spacing scale, shadow tiers, gradient tokens, motion durations.
-- Reusable primitives: `PageShell`, `SectionHeader`, `StatCard`, `ActionButton`, `Modal`, `EmptyState`, `Skeleton`.
+## 5. Remove Supabase wiring
+- Delete `.env` Supabase vars (keep file empty or remove).
+- Keep `src/integrations/supabase/types.ts` for TypeScript types (harmless, useful reference for backend dev).
+- Leave `supabase/` folder + `config.toml` + edge function source as **reference** for the backend dev (documented in BACKEND.md).
 
-Deliverable: updated `index.css` + `tailwind.config.ts` + a small style-guide route for QA.
+## 6. BACKEND.md spec
+Add `BACKEND.md` at repo root documenting for your backend developer:
+- **Auth endpoints needed**: signup, login, logout, session, password reset (request shapes + response shapes).
+- **Tables / resources**: profiles, wallets, transactions, deriv_accounts, deriv_funding_requests, trade_journal_entries, chat_conversations, chat_messages — with column types pulled from current schema.
+- **RPC / business logic**: `convert_currency` (atomic wallet debit/credit + transaction insert).
+- **Edge function**: `trading-coach` (streaming AI chat, model + system prompt).
+- **Auth rules**: every row scoped to `user_id = current_user`.
+- **Triggers needed**: auto-create profile + 5 wallets (NGN/USD/USDT/BTC/ETH) on signup.
+- **Where mock data lives**: pointers to `src/lib/mockData.ts` and `src/lib/mockClient.ts` so the dev knows exactly what to swap.
 
----
+## Result
+- App runs with zero network calls.
+- Every screen demos with realistic data.
+- Backend dev has a single `BACKEND.md` + the mock client as the contract — they replace `mockClient.ts` with real fetch calls (or re-wire Supabase) and ship.
 
-## Phase 1 — Landing Page Redesign
-
-Public marketing surface only.
-
-- Top nav: Home, Wallets, Brokerage Funding, PremiumX AI, Support + Get Started / Login.
-- Hero: tagline "Fund, Convert, Trade & Grow with AI", dual CTA.
-- Feature preview cards: Wallet System, Brokerage Funding, PremiumX AI (with sub-bullets).
-- Rates strip (live USD/NGN, BTC, ETH, USDT) using Coingecko + an FX API.
-- Footer: Privacy, Terms, Contact, Socials.
-- Scroll reveals already in place — reuse.
-
----
-
-## Phase 2 — Authentication Upgrade
-
-Extend current email/password flow.
-
-- Signup fields: Username, Email, Country (with auto-detect via IP), Phone, Password, Confirm.
-- Currency auto-set rule (NGN/USD/etc.) stored on profile.
-- Email verification + OTP (Twilio) for phone.
-- Login: email/username, Remember Me, Forgot Password (+ `/reset-password` page).
-- Optional later: Google / Apple OAuth (configured in Supabase dashboard).
-
-DB: extend `profiles` (country, currency, phone_verified, email_verified).
-
----
-
-## Phase 3 — Dashboard Redesign
-
-Rebuild `/dashboard` against the new design system.
-
-- Header: hamburger drawer (profile, settings, notifications, products), bell, avatar.
-- Welcome block with first name.
-- Main Balance Card: NGN/USD toggle, hide-balance eye, live FX.
-- Live Rates strip: USD/NGN, BTC/USD, ETH/USD, USDT/NGN + trend deltas.
-- Quick Actions: Fund, Withdraw, Convert, Send (modals).
-- Transactions list with filter tabs: All / Successful / Pending / Failed.
-- Bottom nav stays.
-
----
-
-## Phase 4 — Wallet System
-
-- Wallets index: NGN, USD, USDT, BTC, ETH.
-- Wallet detail: balance, deposit address generator, QR, copy, send/receive.
-- Network selectors: USDT (TRC20/BEP20/ERC20), ETH (ERC20), BTC.
-- Internal transfer to AstroTag.
-- Swap/Convert (already partially built — polish UI + add BTC/ETH).
-
-DB: `wallet_addresses` (wallet_id, network, address), extend `transactions` with network/tx_hash.
-
----
-
-## Phase 5 — Brokerage Funding
-
-- Providers page with search: Deriv, PayPal, Skrill, Binance, Bybit, Neteller.
-- Deposit flow: select → account ID/email → amount → confirm → processing → receipt.
-- Withdrawal flow: platform → destination → amount → security PIN → submit.
-- Funding history + status tracking.
-- Provider integrations stubbed first (manual ops queue), then wired one-by-one (Deriv first — already started).
-
-DB: `brokerage_accounts`, `funding_requests` (extend existing `deriv_funding_requests` into a generic table).
-
----
-
-## Phase 6 — PremiumX AI
-
-Build on existing `trading-coach` edge function.
-
-- AI hub `/ai` with tabs: Trade Insights, Business Adviser, Rate Updates, Crypto News, Chat.
-- Persistent threads (chat_conversations / chat_messages already exist).
-- Floating PX AI button on dashboard.
-- News + rates panels powered by external APIs (cached server-side).
-- Lovable AI Gateway (Gemini 3 Flash default).
-
----
-
-## Phase 7 — Platform Features
-
-- Notifications: in-app bell + push (later).
-- Security: 2FA, withdrawal PIN, biometric (mobile webauthn), withdrawal email approval.
-- Profile: KYC (ID, selfie, address) with storage bucket + admin review queue.
-- Manage bank / crypto / brokerage accounts.
-- Support: live chat widget, WhatsApp deeplink, email, help center.
-- Referrals: code, invite, earnings ledger, leaderboard.
-- Settings: theme, language, notification prefs, logout.
-
----
-
-## Phase 8 — Backend Hardening & Launch
-
-- Audit RLS on every table.
-- Edge functions for: rates cache, news cache, OTP, KYC review, referral payouts.
-- Secrets: COINGECKO_API_KEY, FX_API_KEY, TWILIO_*, provider keys (added when each integration starts).
-- Analytics + error monitoring.
-- Performance pass, SEO meta, publish.
-
----
-
-## Suggested Order of Execution
-
-```text
-Phase 0  → design tokens          (foundation)
-Phase 1  → landing                (public face)
-Phase 3  → dashboard              (core daily surface)
-Phase 2  → auth upgrades          (in parallel-able)
-Phase 4  → wallets
-Phase 5  → brokerage funding
-Phase 6  → AI hub
-Phase 7  → platform features
-Phase 8  → hardening + launch
-```
-
-## What I need from you to start
-
-1. Confirm the phase order above (or reshuffle).
-2. Phase 0 design direction: keep current dark navy, or generate 3 fresh directions to pick from?
-3. Which phase do we ship first after Phase 0 — Landing (Phase 1) or Dashboard (Phase 3)?
+## Technical notes
+- Mock client returns `{ data, error: null }` shape to match Supabase response so call sites stay identical.
+- localStorage keys namespaced under `mock:*` for easy reset.
+- No changes to UI components, routes, or styling.

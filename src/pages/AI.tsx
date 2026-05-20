@@ -117,69 +117,26 @@ const AI = () => {
       content: userMessage.content,
     });
 
-    // Stream from edge function
+    // MOCK: simulate a streamed AI reply token-by-token (no backend call).
     let assistantText = "";
     try {
-      const { data: { session } } = await supabase.auth.getSession();
-      const token = session?.access_token;
-      const url = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/trading-coach`;
-      const resp = await fetch(url, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          messages: [...messages, userMessage].map((m) => ({ role: m.role, content: m.content })),
-        }),
-      });
+      const reply = `Here's a quick take on **"${userMessage.content.slice(0, 80)}"**:\n\n` +
+        `- Review your last 5 trades and look for **one repeating mistake**.\n` +
+        `- Define your **risk per trade** as a fixed % of equity (1–2%).\n` +
+        `- Journal **emotion + setup quality** alongside P&L.\n\n` +
+        `_(This is a mock response — your backend developer will wire up the real AI in \`/BACKEND.md\` → trading-coach.)_`;
 
-      if (resp.status === 429) {
-        toast({ title: "Rate limit", description: "Slow down a moment and try again.", variant: "destructive" });
-        setStreaming(false);
-        return;
-      }
-      if (resp.status === 402) {
-        toast({ title: "AI credits exhausted", description: "Please add credits to your workspace.", variant: "destructive" });
-        setStreaming(false);
-        return;
-      }
-      if (!resp.ok || !resp.body) throw new Error(`Status ${resp.status}`);
-
-      // Insert empty assistant message and stream into it
       setMessages((prev) => [...prev, { role: "assistant", content: "" }]);
 
-      const reader = resp.body.getReader();
-      const decoder = new TextDecoder();
-      let buffer = "";
-      let done = false;
-
-      while (!done) {
-        const { value, done: d } = await reader.read();
-        if (d) break;
-        buffer += decoder.decode(value, { stream: true });
-        let newlineIdx: number;
-        while ((newlineIdx = buffer.indexOf("\n")) !== -1) {
-          let line = buffer.slice(0, newlineIdx);
-          buffer = buffer.slice(newlineIdx + 1);
-          if (line.endsWith("\r")) line = line.slice(0, -1);
-          if (line.startsWith(":") || line.trim() === "") continue;
-          if (!line.startsWith("data: ")) continue;
-          const json = line.slice(6).trim();
-          if (json === "[DONE]") { done = true; break; }
-          try {
-            const parsed = JSON.parse(json);
-            const delta = parsed.choices?.[0]?.delta?.content as string | undefined;
-            if (delta) {
-              assistantText += delta;
-              setMessages((prev) => prev.map((m, i) => i === prev.length - 1 ? { ...m, content: assistantText } : m));
-            }
-          } catch {
-            buffer = line + "\n" + buffer;
-            break;
-          }
-        }
+      const tokens = reply.split(/(\s+)/);
+      for (const t of tokens) {
+        await new Promise((r) => setTimeout(r, 20));
+        assistantText += t;
+        setMessages((prev) =>
+          prev.map((m, i) => (i === prev.length - 1 ? { ...m, content: assistantText } : m))
+        );
       }
+
 
       // Persist assistant message
       if (assistantText) {
