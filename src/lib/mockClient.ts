@@ -188,7 +188,7 @@ const auth = {
     return {
       data: {
         subscription: {
-          unsubscribe: () => authListeners.delete(cb),
+          unsubscribe: () => { authListeners.delete(cb); },
         },
       },
     };
