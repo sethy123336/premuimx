@@ -113,9 +113,12 @@ const Dashboard = () => {
 
 
   return (
-    <div className="min-h-screen bg-[hsl(220,40%,7%)] text-white flex flex-col">
+    <div className="min-h-[100dvh] bg-[hsl(220,40%,7%)] text-white flex flex-col overflow-x-hidden">
       {/* Top Bar */}
-      <div className="flex items-center justify-between px-5 pt-5 pb-2">
+      <div
+        className="flex items-center justify-between px-5 pb-2"
+        style={{ paddingTop: "calc(1rem + env(safe-area-inset-top))" }}
+      >
         <DrawerMenu username={username} email={user?.email ?? undefined} />
         <h2 className="text-lg font-bold text-amber-400 tracking-wide">PremiumX</h2>
         <div className="flex items-center gap-3">
