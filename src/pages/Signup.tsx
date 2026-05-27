@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/select";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
+import logo from "@/assets/logo.png";
 import { COUNTRIES, Country, DEFAULT_COUNTRY, detectCountry } from "@/lib/countries";
 
 type Step = 1 | 2 | 3;
@@ -100,9 +101,9 @@ const Signup = () => {
 
   return (
     <div className="min-h-[100dvh] bg-[hsl(220,40%,7%)] text-white flex flex-col px-5 py-8">
-      <div className="text-center mb-5">
-        <h1 className="text-3xl font-extrabold text-amber-400 tracking-tight">PremiumX</h1>
-        <p className="text-sm text-white/60 mt-1">Create your account</p>
+      <div className="flex flex-col items-center mb-5">
+        <img src={logo} alt="PremiumX" className="w-16 h-16 rounded-2xl" />
+        <p className="text-sm text-white/60 mt-2">Create your account</p>
         <div className="flex justify-center gap-1.5 mt-3">
           {[1, 2, 3].map((n) => (
             <span key={n} className={`h-1 w-10 rounded-full ${n <= step ? "bg-amber-500" : "bg-white/15"}`} />
