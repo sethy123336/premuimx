@@ -10,7 +10,7 @@ const AboutSection = () => {
           PremiumX brings funding, crypto, AI insights and trade tracking into a single dashboard built for serious traders.
         </p>
         <p className="text-base md:text-lg text-muted-foreground leading-relaxed">
-          No more juggling exchanges, brokers and bank apps — manage your trading life from one place.
+          No more juggling exchanges, brokers and bank apps  manage your trading life from one place.
         </p>
       </div>
     </section>
