@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/dialog";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
+import logo from "@/assets/logo.png";
 
 const REMEMBER_KEY = "premiumx_remember_email";
 
@@ -63,9 +64,9 @@ const Login = () => {
 
   return (
     <div className="min-h-[100dvh] bg-[hsl(220,40%,7%)] text-white flex flex-col px-5 py-8">
-      <div className="text-center mb-6">
-        <h1 className="text-3xl font-extrabold text-amber-400 tracking-tight">PremiumX</h1>
-        <p className="text-sm text-white/60 mt-1">Welcome back</p>
+      <div className="flex flex-col items-center mb-6">
+        <img src={logo} alt="PremiumX" className="w-16 h-16 rounded-2xl" />
+        <p className="text-sm text-white/60 mt-2">Welcome back</p>
       </div>
 
       <div className="w-full max-w-md mx-auto bg-[hsl(220,30%,10%)] border border-white/5 rounded-2xl p-5">
