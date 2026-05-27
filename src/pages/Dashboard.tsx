@@ -120,7 +120,7 @@ const Dashboard = () => {
         style={{ paddingTop: "calc(1rem + env(safe-area-inset-top))" }}
       >
         <DrawerMenu username={username} email={user?.email ?? undefined} />
-        <h2 className="text-lg font-bold text-amber-400 tracking-wide">PremiumX</h2>
+        <img src={logo} alt="PremiumX" className="h-8 w-8 rounded-lg" />
         <div className="flex items-center gap-3">
           <button className="relative text-white/70 hover:text-white" aria-label="Notifications">
             <Bell className="w-5 h-5" />
