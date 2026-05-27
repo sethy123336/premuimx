@@ -1,4 +1,4 @@
-import { Mail, MapPin, Phone } from "lucide-react";
+import { Mail, MapPin, Phone, Instagram } from "lucide-react";
 import { Link } from "react-router-dom";
 import logo from "@/assets/logo.png";
 
@@ -44,9 +44,11 @@ const Footer = () => {
                 <Phone className="w-4 h-4 text-primary mt-0.5 shrink-0" />
                 <span className="text-muted-foreground text-sm">+234 800 000 0000</span>
               </div>
-              <div className="flex gap-4 mt-2">
-                <a href="#" className="text-muted-foreground hover:text-primary transition-colors text-sm">𝕏</a>
-                <a href="#" className="text-muted-foreground hover:text-primary transition-colors text-sm">Instagram</a>
+              <div className="flex items-center gap-4 mt-2">
+                <a href="#" aria-label="X" className="text-muted-foreground hover:text-primary transition-colors inline-flex items-center justify-center w-5 h-5 text-base leading-none">𝕏</a>
+                <a href="#" aria-label="Instagram" className="text-muted-foreground hover:text-primary transition-colors inline-flex items-center justify-center w-5 h-5">
+                  <Instagram className="w-5 h-5" />
+                </a>
               </div>
             </div>
           </div>
