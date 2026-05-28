@@ -5,6 +5,7 @@ import skrillLogo from "@/assets/skrill-logo.png";
 import netellerLogo from "@/assets/neteller-logo.png";
 import bybitLogo from "@/assets/bybit-logo.png";
 import binanceLogo from "@/assets/binance-logo.png";
+import derivLogo from "@/assets/deriv-logo.png";
 import BottomNav from "@/components/dashboard/BottomNav";
 import DrawerMenu from "@/components/dashboard/DrawerMenu";
 import { Button } from "@/components/ui/button";
