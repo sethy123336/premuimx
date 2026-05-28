@@ -159,8 +159,8 @@ const FundDeriv = () => {
                           : "bg-[hsl(220,30%,10%)] border-white/5 hover:bg-[hsl(220,30%,13%)]"
                       }`}
                     >
-                      <span className={`w-10 h-10 rounded-lg ${p.bg} flex items-center justify-center text-lg`}>
-                        {p.emoji}
+                      <span className={`w-10 h-10 rounded-lg ${p.bg} flex items-center justify-center text-lg overflow-hidden`}>
+                        {p.logo ? <img src={p.logo} alt={p.name} className="w-7 h-7 object-contain" /> : p.emoji}
                       </span>
                       <span className="text-xs font-semibold text-white/90">{p.name}</span>
                     </button>
