@@ -25,7 +25,7 @@ interface Platform {
 const PLATFORMS: Platform[] = [
   { id: "deriv", name: "Deriv", emoji: "📊", bg: "bg-rose-500/15" },
   { id: "paypal", name: "PayPal", logo: paypalLogo, bg: "bg-sky-500/15" },
-  { id: "skrill", name: "Skrill", emoji: "💳", bg: "bg-purple-500/15" },
+  { id: "skrill", name: "Skrill", logo: skrillLogo, bg: "bg-purple-500/15" },
   { id: "binance", name: "Binance", emoji: "🟡", bg: "bg-amber-500/15" },
   { id: "bybit", name: "Bybit", emoji: "🔵", bg: "bg-blue-500/15" },
   { id: "neteller", name: "Neteller", emoji: "💰", bg: "bg-orange-500/15" },
