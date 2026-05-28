@@ -20,10 +20,6 @@ interface Platform {
   logo?: string;
   bg: string;
 }
-  name: string;
-  emoji: string;
-  bg: string;
-}
 
 const PLATFORMS: Platform[] = [
   { id: "deriv", name: "Deriv", emoji: "📊", bg: "bg-rose-500/15" },
