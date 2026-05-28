@@ -29,7 +29,7 @@ const PLATFORMS: Platform[] = [
   { id: "deriv", name: "Deriv", emoji: "📊", bg: "bg-rose-500/15" },
   { id: "paypal", name: "PayPal", logo: paypalLogo, bg: "bg-sky-500/15" },
   { id: "skrill", name: "Skrill", logo: skrillLogo, bg: "bg-purple-500/15" },
-  { id: "binance", name: "Binance", emoji: "🟡", bg: "bg-amber-500/15" },
+  { id: "binance", name: "Binance", logo: binanceLogo, bg: "bg-black" },
   { id: "bybit", name: "Bybit", logo: bybitLogo, bg: "bg-white" },
   { id: "neteller", name: "Neteller", logo: netellerLogo, bg: "bg-white" },
 ];
