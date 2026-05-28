@@ -16,6 +16,11 @@ type TabKey = "deposit" | "withdraw" | "history";
 interface Platform {
   id: string;
   name: string;
+  emoji?: string;
+  logo?: string;
+  bg: string;
+}
+  name: string;
   emoji: string;
   bg: string;
 }
