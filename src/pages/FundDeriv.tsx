@@ -29,7 +29,7 @@ const PLATFORMS: Platform[] = [
   { id: "skrill", name: "Skrill", logo: skrillLogo, bg: "bg-purple-500/15" },
   { id: "binance", name: "Binance", emoji: "🟡", bg: "bg-amber-500/15" },
   { id: "bybit", name: "Bybit", emoji: "🔵", bg: "bg-blue-500/15" },
-  { id: "neteller", name: "Neteller", emoji: "💰", bg: "bg-orange-500/15" },
+  { id: "neteller", name: "Neteller", logo: netellerLogo, bg: "bg-white" },
 ];
 
 interface HistoryItem {
