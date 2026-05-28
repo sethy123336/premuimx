@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { Menu, History, Search, Lock, ArrowDownToLine } from "lucide-react";
+import paypalLogo from "@/assets/paypal-logo.png";
 import BottomNav from "@/components/dashboard/BottomNav";
 import DrawerMenu from "@/components/dashboard/DrawerMenu";
 import { Button } from "@/components/ui/button";
@@ -15,13 +16,14 @@ type TabKey = "deposit" | "withdraw" | "history";
 interface Platform {
   id: string;
   name: string;
-  emoji: string;
+  emoji?: string;
+  logo?: string;
   bg: string;
 }
 
 const PLATFORMS: Platform[] = [
   { id: "deriv", name: "Deriv", emoji: "📊", bg: "bg-rose-500/15" },
-  { id: "paypal", name: "PayPal", emoji: "🅿️", bg: "bg-sky-500/15" },
+  { id: "paypal", name: "PayPal", logo: paypalLogo, bg: "bg-sky-500/15" },
   { id: "skrill", name: "Skrill", emoji: "💳", bg: "bg-purple-500/15" },
   { id: "binance", name: "Binance", emoji: "🟡", bg: "bg-amber-500/15" },
   { id: "bybit", name: "Bybit", emoji: "🔵", bg: "bg-blue-500/15" },
@@ -157,8 +159,8 @@ const FundDeriv = () => {
                           : "bg-[hsl(220,30%,10%)] border-white/5 hover:bg-[hsl(220,30%,13%)]"
                       }`}
                     >
-                      <span className={`w-10 h-10 rounded-lg ${p.bg} flex items-center justify-center text-lg`}>
-                        {p.emoji}
+                      <span className={`w-10 h-10 rounded-lg ${p.bg} flex items-center justify-center text-lg overflow-hidden`}>
+                        {p.logo ? <img src={p.logo} alt={p.name} className="w-7 h-7 object-contain" /> : p.emoji}
                       </span>
                       <span className="text-xs font-semibold text-white/90">{p.name}</span>
                     </button>
