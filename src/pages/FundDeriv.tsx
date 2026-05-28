@@ -4,6 +4,7 @@ import paypalLogo from "@/assets/paypal-logo.png";
 import skrillLogo from "@/assets/skrill-logo.png";
 import netellerLogo from "@/assets/neteller-logo.png";
 import bybitLogo from "@/assets/bybit-logo.png";
+import binanceLogo from "@/assets/binance-logo.png";
 import BottomNav from "@/components/dashboard/BottomNav";
 import DrawerMenu from "@/components/dashboard/DrawerMenu";
 import { Button } from "@/components/ui/button";
@@ -28,7 +29,7 @@ const PLATFORMS: Platform[] = [
   { id: "deriv", name: "Deriv", emoji: "📊", bg: "bg-rose-500/15" },
   { id: "paypal", name: "PayPal", logo: paypalLogo, bg: "bg-sky-500/15" },
   { id: "skrill", name: "Skrill", logo: skrillLogo, bg: "bg-purple-500/15" },
-  { id: "binance", name: "Binance", emoji: "🟡", bg: "bg-amber-500/15" },
+  { id: "binance", name: "Binance", logo: binanceLogo, bg: "bg-black" },
   { id: "bybit", name: "Bybit", logo: bybitLogo, bg: "bg-white" },
   { id: "neteller", name: "Neteller", logo: netellerLogo, bg: "bg-white" },
 ];
