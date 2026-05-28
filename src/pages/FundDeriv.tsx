@@ -5,6 +5,7 @@ import skrillLogo from "@/assets/skrill-logo.png";
 import netellerLogo from "@/assets/neteller-logo.png";
 import bybitLogo from "@/assets/bybit-logo.png";
 import binanceLogo from "@/assets/binance-logo.png";
+import derivLogo from "@/assets/deriv-logo.png";
 import BottomNav from "@/components/dashboard/BottomNav";
 import DrawerMenu from "@/components/dashboard/DrawerMenu";
 import { Button } from "@/components/ui/button";
@@ -26,7 +27,7 @@ interface Platform {
 }
 
 const PLATFORMS: Platform[] = [
-  { id: "deriv", name: "Deriv", emoji: "📊", bg: "bg-rose-500/15" },
+  { id: "deriv", name: "Deriv", logo: derivLogo, bg: "bg-white" },
   { id: "paypal", name: "PayPal", logo: paypalLogo, bg: "bg-sky-500/15" },
   { id: "skrill", name: "Skrill", logo: skrillLogo, bg: "bg-purple-500/15" },
   { id: "binance", name: "Binance", logo: binanceLogo, bg: "bg-black" },
