@@ -3,6 +3,7 @@ import { Menu, History, Search, Lock, ArrowDownToLine } from "lucide-react";
 import paypalLogo from "@/assets/paypal-logo.png";
 import skrillLogo from "@/assets/skrill-logo.png";
 import netellerLogo from "@/assets/neteller-logo.png";
+import bybitLogo from "@/assets/bybit-logo.png";
 import BottomNav from "@/components/dashboard/BottomNav";
 import DrawerMenu from "@/components/dashboard/DrawerMenu";
 import { Button } from "@/components/ui/button";
