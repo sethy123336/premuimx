@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Menu, History, Search, Lock, ArrowDownToLine } from "lucide-react";
 import paypalLogo from "@/assets/paypal-logo.png";
 import skrillLogo from "@/assets/skrill-logo.png";
+import netellerLogo from "@/assets/neteller-logo.png";
 import BottomNav from "@/components/dashboard/BottomNav";
 import DrawerMenu from "@/components/dashboard/DrawerMenu";
 import { Button } from "@/components/ui/button";
@@ -28,7 +29,7 @@ const PLATFORMS: Platform[] = [
   { id: "skrill", name: "Skrill", logo: skrillLogo, bg: "bg-purple-500/15" },
   { id: "binance", name: "Binance", emoji: "🟡", bg: "bg-amber-500/15" },
   { id: "bybit", name: "Bybit", emoji: "🔵", bg: "bg-blue-500/15" },
-  { id: "neteller", name: "Neteller", emoji: "💰", bg: "bg-orange-500/15" },
+  { id: "neteller", name: "Neteller", logo: netellerLogo, bg: "bg-white" },
 ];
 
 interface HistoryItem {
