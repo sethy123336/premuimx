@@ -60,6 +60,7 @@ const FundDeriv = () => {
   // Deposit form
   const [account, setAccount] = useState("");
   const [fullName, setFullName] = useState("");
+  const [coinType, setCoinType] = useState("USDT");
   const [amount, setAmount] = useState("");
 
   // Withdraw form
@@ -84,11 +85,13 @@ const FundDeriv = () => {
   const handleConfirm = () => {
     if (!selectedPlatform) return toast({ title: "Select a platform", variant: "destructive" });
     const isDeriv = selectedPlatform === "deriv";
+    const isBinance = selectedPlatform === "binance";
     if (isDeriv && !account.trim()) return toast({ title: "Enter Deriv CR number", variant: "destructive" });
-    if (!isDeriv && !account.trim()) return toast({ title: "Enter account ID", variant: "destructive" });
+    if (isBinance && !account.trim()) return toast({ title: "Enter Binance UID", variant: "destructive" });
+    if (!isDeriv && !isBinance && !account.trim()) return toast({ title: "Enter account ID", variant: "destructive" });
     if (isDeriv && !fullName.trim()) return toast({ title: "Enter full name", variant: "destructive" });
     if (usdAmt < 1) return toast({ title: "Enter valid amount", variant: "destructive" });
-    toast({ title: "Funding request submitted", description: `${PLATFORMS.find((p) => p.id === selectedPlatform)?.name} • $${usdAmt}` });
+    toast({ title: "Funding request submitted", description: `${PLATFORMS.find((p) => p.id === selectedPlatform)?.name} • $${usdAmt}${isBinance ? ` ${coinType}` : ""}` });
     setAccount(""); setFullName(""); setAmount("");
   };
 
@@ -210,6 +213,33 @@ const FundDeriv = () => {
                           maxLength={100}
                           className="mt-1 bg-[hsl(220,30%,14%)] border-white/10 text-white"
                         />
+                      </div>
+                    </>
+                  ) : selectedPlatform === "binance" ? (
+                    <>
+                      <div>
+                        <Label className="text-xs text-white/70">Binance UID</Label>
+                        <Input
+                          value={account}
+                          onChange={(e) => setAccount(e.target.value.replace(/\D/g, ""))}
+                          inputMode="numeric"
+                          placeholder="123456789"
+                          maxLength={20}
+                          className="mt-1 bg-[hsl(220,30%,14%)] border-white/10 text-white"
+                        />
+                      </div>
+                      <div>
+                        <Label className="text-xs text-white/70">Coin Type</Label>
+                        <Select value={coinType} onValueChange={setCoinType}>
+                          <SelectTrigger className="mt-1 bg-[hsl(220,30%,14%)] border-white/10 text-white">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent className="bg-[hsl(220,30%,14%)] border-white/10 text-white">
+                            <SelectItem value="USDT">USDT</SelectItem>
+                            <SelectItem value="BTC">BTC</SelectItem>
+                            <SelectItem value="ETH">ETH</SelectItem>
+                          </SelectContent>
+                        </Select>
                       </div>
                     </>
                   ) : (
