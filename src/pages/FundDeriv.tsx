@@ -189,16 +189,41 @@ const FundDeriv = () => {
                     <span className="text-xs text-white/50">selected</span>
                   </div>
 
-                  <div>
-                    <Label className="text-xs text-white/70">Account Email / ID</Label>
-                    <Input
-                      value={account}
-                      onChange={(e) => setAccount(e.target.value)}
-                      placeholder="your@deriv.com"
-                      maxLength={100}
-                      className="mt-1 bg-[hsl(220,30%,14%)] border-white/10 text-white"
-                    />
-                  </div>
+                  {selectedPlatform === "deriv" ? (
+                    <>
+                      <div>
+                        <Label className="text-xs text-white/70">Deriv CR Number</Label>
+                        <Input
+                          value={account}
+                          onChange={(e) => setAccount(e.target.value)}
+                          placeholder="CR1234567"
+                          maxLength={20}
+                          className="mt-1 bg-[hsl(220,30%,14%)] border-white/10 text-white"
+                        />
+                      </div>
+                      <div>
+                        <Label className="text-xs text-white/70">Full Name</Label>
+                        <Input
+                          value={fullName}
+                          onChange={(e) => setFullName(e.target.value)}
+                          placeholder="John Doe"
+                          maxLength={100}
+                          className="mt-1 bg-[hsl(220,30%,14%)] border-white/10 text-white"
+                        />
+                      </div>
+                    </>
+                  ) : (
+                    <div>
+                      <Label className="text-xs text-white/70">Account Email / ID</Label>
+                      <Input
+                        value={account}
+                        onChange={(e) => setAccount(e.target.value)}
+                        placeholder="your@email.com"
+                        maxLength={100}
+                        className="mt-1 bg-[hsl(220,30%,14%)] border-white/10 text-white"
+                      />
+                    </div>
+                  )}
 
                   <div>
                     <Label className="text-xs text-white/70">Amount (USD)</Label>
