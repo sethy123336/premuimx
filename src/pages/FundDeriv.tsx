@@ -215,6 +215,33 @@ const FundDeriv = () => {
                         />
                       </div>
                     </>
+                  ) : selectedPlatform === "binance" ? (
+                    <>
+                      <div>
+                        <Label className="text-xs text-white/70">Binance UID</Label>
+                        <Input
+                          value={account}
+                          onChange={(e) => setAccount(e.target.value.replace(/\D/g, ""))}
+                          inputMode="numeric"
+                          placeholder="123456789"
+                          maxLength={20}
+                          className="mt-1 bg-[hsl(220,30%,14%)] border-white/10 text-white"
+                        />
+                      </div>
+                      <div>
+                        <Label className="text-xs text-white/70">Coin Type</Label>
+                        <Select value={coinType} onValueChange={setCoinType}>
+                          <SelectTrigger className="mt-1 bg-[hsl(220,30%,14%)] border-white/10 text-white">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent className="bg-[hsl(220,30%,14%)] border-white/10 text-white">
+                            <SelectItem value="USDT">USDT</SelectItem>
+                            <SelectItem value="BTC">BTC</SelectItem>
+                            <SelectItem value="ETH">ETH</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    </>
                   ) : (
                     <div>
                       <Label className="text-xs text-white/70">Account Email / ID</Label>
