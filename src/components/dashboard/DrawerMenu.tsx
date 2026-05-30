@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
-import { Menu, User, Settings, Bell, Wallet, Monitor, Bot, BookOpen, LogOut, Shield, HelpCircle, Sun, Moon } from "lucide-react";
+import { Menu, User, Settings, Wallet, Monitor, Bot, BookOpen, LogOut, HelpCircle, Sun, Moon } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { useTheme } from "@/hooks/useTheme";
 
@@ -15,8 +15,6 @@ const items = [
   { icon: Monitor, label: "Fund Deriv", path: "/fund-deriv" },
   { icon: BookOpen, label: "Journal", path: "/journal" },
   { icon: Bot, label: "PremiumX AI", path: "/ai" },
-  { icon: Bell, label: "Notifications", path: "/dashboard" },
-  { icon: Shield, label: "Security", path: "/dashboard" },
   { icon: Settings, label: "Settings", path: "/dashboard" },
   { icon: HelpCircle, label: "Support", path: "/dashboard" },
 ];
