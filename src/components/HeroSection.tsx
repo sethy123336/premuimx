@@ -12,7 +12,8 @@ const HeroSection = () => {
       <div className="relative max-w-6xl mx-auto flex flex-col md:flex-row items-center md:items-start md:justify-between gap-12 md:gap-16">
         <div className="flex flex-col items-center md:items-start text-center md:text-left md:pt-16 lg:pt-24 md:max-w-xl">
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground leading-[1.05] mb-6 tracking-tight">
-            Fund, Convert, Trade <span className="text-primary">& Grow with AI</span>
+            Trade with Deriv
+            <span className="block mt-2">Fund, Convert <span className="text-primary">& Grow with AI</span></span>
           </h1>
           <p className="text-base md:text-lg text-muted-foreground max-w-lg mb-10 leading-relaxed">
             One platform for NGN, USD and crypto wallets, brokerage funding, and AI-powered market insights.
