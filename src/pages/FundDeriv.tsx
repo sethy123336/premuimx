@@ -61,6 +61,7 @@ const FundDeriv = () => {
   const [account, setAccount] = useState("");
   const [fullName, setFullName] = useState("");
   const [coinType, setCoinType] = useState("USDT");
+  const [currency, setCurrency] = useState("USD");
   const [amount, setAmount] = useState("");
 
   // Withdraw form
