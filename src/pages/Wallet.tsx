@@ -1,14 +1,9 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, ArrowDownToLine, ArrowUpFromLine, Eye, EyeOff, Loader2, Plus, Repeat, Send } from "lucide-react";
+import { ChevronRight, Eye, EyeOff, Loader2, TrendingUp } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import BottomNav from "@/components/dashboard/BottomNav";
-import FundModal from "@/components/dashboard/FundModal";
-import WithdrawModal from "@/components/dashboard/WithdrawModal";
-import ConvertModal from "@/components/dashboard/ConvertModal";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
 import {
   Currency,
   fetchUsdRates,
@@ -24,13 +19,18 @@ interface WalletRow {
   available_balance: number;
 }
 
-const FIAT: Currency[] = ["NGN", "USD"];
-const CRYPTO: Currency[] = ["USDT", "BTC", "ETH"];
+const ORDER: Currency[] = ["NGN", "USD", "USDT", "BTC", "ETH"];
 
-type ActionKey = "fund" | "withdraw" | "convert" | "send";
+const ASSET_META: Record<Currency, { name: string; symbol: string; iconBg: string; iconText: string }> = {
+  NGN: { name: "Nigerian Naira", symbol: "₦", iconBg: "from-emerald-500/30 to-emerald-500/5", iconText: "text-emerald-300" },
+  USD: { name: "US Dollar", symbol: "$", iconBg: "from-sky-500/30 to-sky-500/5", iconText: "text-sky-300" },
+  USDT: { name: "Tether", symbol: "₮", iconBg: "from-teal-500/30 to-teal-500/5", iconText: "text-teal-300" },
+  BTC: { name: "Bitcoin", symbol: "₿", iconBg: "from-amber-500/30 to-amber-500/5", iconText: "text-amber-300" },
+  ETH: { name: "Ethereum", symbol: "Ξ", iconBg: "from-purple-500/30 to-purple-500/5", iconText: "text-purple-300" },
+};
 
-const fmtNgn = (v: number) => "₦" + new Intl.NumberFormat("en-US", { maximumFractionDigits: 0 }).format(v);
-const fmtUsd = (v: number) => "$" + new Intl.NumberFormat("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(v);
+const fmtUsd = (v: number) =>
+  "$" + new Intl.NumberFormat("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(v);
 
 const Wallet = () => {
   const navigate = useNavigate();
@@ -39,14 +39,6 @@ const Wallet = () => {
   const [rates, setRates] = useState<UsdRates | null>(null);
   const [loading, setLoading] = useState(true);
   const [hidden, setHidden] = useState(false);
-  const [openAction, setOpenAction] = useState<ActionKey | null>(null);
-  const [refreshKey, setRefreshKey] = useState(0);
-
-  const reload = async () => {
-    if (!user) return;
-    const { data } = await supabase.from("wallets").select("id,currency,balance,available_balance").eq("user_id", user.id);
-    setWallets((data ?? []) as WalletRow[]);
-  };
 
   useEffect(() => {
     if (!user) return;
@@ -61,7 +53,7 @@ const Wallet = () => {
       setLoading(false);
     });
     return () => { cancelled = true; };
-  }, [user, refreshKey]);
+  }, [user]);
 
   const byCurrency = useMemo(() => {
     const m: Partial<Record<Currency, WalletRow>> = {};
@@ -69,19 +61,10 @@ const Wallet = () => {
     return m;
   }, [wallets]);
 
-  const ngnWalletId = byCurrency.NGN?.id;
-
-  const ngnBal = Number(byCurrency.NGN?.balance ?? 0);
-  const usdBal = Number(byCurrency.USD?.balance ?? 0);
-  const ngnInUsd = rates ? toUsd("NGN", ngnBal, rates) : 0;
-  const usdInNgn = rates ? usdBal * rates.NGN : 0;
-
-  const actions: { key: ActionKey; label: string; icon: typeof ArrowDownToLine; color: string; bg: string; ring: string }[] = [
-    { key: "fund", label: "Deposit", icon: ArrowDownToLine, color: "text-emerald-400", bg: "bg-emerald-500/15", ring: "ring-emerald-500/20" },
-    { key: "withdraw", label: "Withdraw", icon: ArrowUpFromLine, color: "text-red-400", bg: "bg-red-500/15", ring: "ring-red-500/20" },
-    { key: "convert", label: "Convert", icon: Repeat, color: "text-amber-400", bg: "bg-amber-500/15", ring: "ring-amber-500/20" },
-    { key: "send", label: "Send", icon: Send, color: "text-sky-400", bg: "bg-sky-500/15", ring: "ring-sky-500/20" },
-  ];
+  const totalUsd = useMemo(() => {
+    if (!rates) return 0;
+    return wallets.reduce((sum, w) => sum + toUsd(w.currency, Number(w.balance) || 0, rates), 0);
+  }, [wallets, rates]);
 
   return (
     <div className="h-[100dvh] bg-[hsl(220,40%,7%)] text-white flex flex-col overflow-hidden">
@@ -90,16 +73,13 @@ const Wallet = () => {
         className="flex-shrink-0 flex items-center justify-between px-5 pb-2 bg-[hsl(220,40%,7%)]"
         style={{ paddingTop: "calc(1rem + env(safe-area-inset-top))" }}
       >
-        <button onClick={() => navigate("/dashboard")} className="text-white/70 hover:text-white" aria-label="Back">
-          <ArrowLeft className="w-5 h-5" />
-        </button>
+        <div className="w-5" />
         <h1 className="text-lg font-semibold">Wallets</h1>
         <button onClick={() => setHidden((h) => !h)} className="text-white/70 hover:text-white" aria-label="Toggle balance">
           {hidden ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
         </button>
       </div>
 
-      {/* Scrollable inner */}
       <div className="flex-1 overflow-y-auto overflow-x-hidden overscroll-contain scrollbar-none pb-4">
         {loading ? (
           <div className="flex items-center justify-center py-16">
@@ -107,87 +87,51 @@ const Wallet = () => {
           </div>
         ) : (
           <>
-            {/* FIAT WALLETS */}
+            {/* Total Balance Card */}
             <div className="px-5 pt-4">
-              <p className="text-[11px] uppercase tracking-wider text-white/50 font-semibold mb-2">Fiat Wallets</p>
-              <div className="grid grid-cols-2 gap-3">
-                {/* NGN */}
-                <button
-                  onClick={() => navigate("/wallet/NGN")}
-                  className="relative overflow-hidden text-left rounded-2xl bg-gradient-to-br from-[hsl(220,35%,15%)] to-[hsl(220,40%,10%)] border border-white/10 p-4"
-                >
-                  <div className="absolute -right-6 -top-6 w-24 h-24 rounded-full bg-emerald-400/10 blur-2xl pointer-events-none" />
-                  <p className="text-xs text-white/60">NGN Wallet</p>
-                  <p className="text-xl font-bold text-amber-400 mt-1 tabular-nums">{hidden ? "••••" : fmtNgn(ngnBal)}</p>
-                  <p className="text-[11px] text-white/50 mt-1">≈ {hidden ? "••" : fmtUsd(ngnInUsd)}</p>
-                  <span className="inline-block mt-2 px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-400 text-[10px] font-semibold">Active</span>
-                </button>
-                {/* USD */}
-                <button
-                  onClick={() => navigate("/wallet/USD")}
-                  className="relative overflow-hidden text-left rounded-2xl bg-gradient-to-br from-[hsl(220,35%,15%)] to-[hsl(220,40%,10%)] border border-white/10 p-4"
-                >
-                  <div className="absolute -right-6 -top-6 w-24 h-24 rounded-full bg-sky-400/10 blur-2xl pointer-events-none" />
-                  <p className="text-xs text-white/60">USD Wallet</p>
-                  <p className="text-xl font-bold text-amber-400 mt-1 tabular-nums">{hidden ? "••••" : fmtUsd(usdBal)}</p>
-                  <p className="text-[11px] text-white/50 mt-1">≈ {hidden ? "••" : fmtNgn(usdInNgn)}</p>
-                  <span className="inline-block mt-2 px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-400 text-[10px] font-semibold">Active</span>
-                </button>
+              <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[hsl(220,40%,16%)] via-[hsl(220,45%,12%)] to-[hsl(220,50%,8%)] border border-white/10 p-6">
+                <div className="absolute -right-10 -top-10 w-40 h-40 rounded-full bg-amber-400/10 blur-3xl pointer-events-none" />
+                <p className="text-xs uppercase tracking-wider text-white/60 font-medium">Total Balance (USD)</p>
+                <p className="text-5xl font-bold tracking-tight tabular-nums mt-3">
+                  {hidden ? "••••••" : !rates ? "—" : fmtUsd(totalUsd)}
+                </p>
+                <div className="flex items-center gap-1.5 mt-4 text-emerald-400 text-sm font-medium">
+                  <TrendingUp className="w-4 h-4" />
+                  <span>Across {wallets.length} wallets</span>
+                </div>
               </div>
             </div>
 
-            {/* CRYPTO WALLETS */}
-            <div className="px-5 pt-5">
-              <p className="text-[11px] uppercase tracking-wider text-white/50 font-semibold mb-2">Crypto Wallets</p>
-              <div className="grid grid-cols-2 gap-3">
-                {CRYPTO.map((c) => {
+            {/* Your Assets */}
+            <div className="px-5 pt-6">
+              <h2 className="text-xl font-bold mb-3">Your Assets</h2>
+              <div className="space-y-3">
+                {ORDER.map((c) => {
                   const w = byCurrency[c];
-                  const bal = Number(w?.balance ?? 0);
-                  const meta: Record<Currency, { name: string; unit: string; change: string; changeColor: string; subtitle: string }> = {
-                    NGN: { name: "NGN", unit: "NGN", change: "", changeColor: "", subtitle: "" },
-                    USD: { name: "USD", unit: "USD", change: "", changeColor: "", subtitle: "" },
-                    USDT: { name: "USDT", unit: "USD", change: "+0.1%", changeColor: "text-emerald-400", subtitle: "TRC20 · BEP20 · ERC20" },
-                    BTC: { name: "Bitcoin", unit: "BTC", change: "+1.2%", changeColor: "text-emerald-400", subtitle: "Bitcoin Network" },
-                    ETH: { name: "Ethereum", unit: "ETH", change: "-0.5%", changeColor: "text-red-400", subtitle: "ERC20" },
-                  };
-                  const m = meta[c];
-                  const display = c === "USDT" ? `$${formatBalance("USDT", bal)}` : `${formatBalance(c, bal)} ${m.unit}`;
+                  if (!w) return null;
+                  const bal = Number(w.balance ?? 0);
+                  const usdEq = rates ? toUsd(c, bal, rates) : 0;
+                  const meta = ASSET_META[c];
                   return (
                     <button
                       key={c}
                       onClick={() => navigate(`/wallet/${c}`)}
-                      className="text-left rounded-2xl bg-[hsl(220,30%,12%)] border border-white/5 p-4"
+                      className="w-full flex items-center gap-3 rounded-2xl bg-[hsl(220,30%,11%)] border border-white/5 p-4 hover:bg-[hsl(220,30%,14%)] transition-colors text-left"
                     >
-                      <p className="text-xs text-white/60">{m.name}</p>
-                      <p className="text-base font-bold mt-1 tabular-nums truncate">{hidden ? "••••" : display}</p>
-                      <p className={`text-[11px] mt-1 font-semibold ${m.changeColor}`}>{m.change}</p>
-                      <p className="text-[10px] text-white/40 mt-1 truncate">{m.subtitle}</p>
-                    </button>
-                  );
-                })}
-                {/* Add Wallet */}
-                <button className="rounded-2xl border border-dashed border-white/15 bg-[hsl(220,30%,10%)] p-4 flex flex-col items-center justify-center gap-1 text-white/50 hover:text-white/80 hover:border-white/30 transition-colors">
-                  <Plus className="w-5 h-5" />
-                  <span className="text-xs">Add Wallet</span>
-                </button>
-              </div>
-            </div>
-
-            {/* Actions */}
-            <div className="px-5 pt-5">
-              <div className="grid grid-cols-4 gap-3">
-                {actions.map((a) => {
-                  const Icon = a.icon;
-                  return (
-                    <button
-                      key={a.key}
-                      onClick={() => setOpenAction(a.key)}
-                      className="flex flex-col items-center gap-2 bg-[hsl(220,30%,12%)] border border-white/5 rounded-2xl py-4 hover:bg-[hsl(220,30%,15%)] transition-colors"
-                    >
-                      <span className={`w-10 h-10 rounded-xl flex items-center justify-center ${a.bg} ring-1 ${a.ring}`}>
-                        <Icon className={`w-5 h-5 ${a.color}`} />
-                      </span>
-                      <span className="text-[11px] font-medium text-white/80">{a.label}</span>
+                      <div className={`w-11 h-11 rounded-full bg-gradient-to-br ${meta.iconBg} flex items-center justify-center flex-shrink-0`}>
+                        <span className={`text-xl font-bold ${meta.iconText}`}>{meta.symbol}</span>
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-base font-semibold">{c}</p>
+                        <p className="text-xs text-white/50 truncate">{meta.name}</p>
+                      </div>
+                      <div className="text-right">
+                        <p className="text-base font-bold tabular-nums">
+                          {hidden ? "••••" : formatBalance(c, bal)}
+                        </p>
+                        <p className="text-xs text-white/50 tabular-nums">≈ {hidden ? "••" : fmtUsd(usdEq)}</p>
+                      </div>
+                      <ChevronRight className="w-4 h-4 text-white/30 flex-shrink-0" />
                     </button>
                   );
                 })}
@@ -200,44 +144,6 @@ const Wallet = () => {
       <div className="flex-shrink-0">
         <BottomNav />
       </div>
-
-      {/* Modals */}
-      {user && (
-        <>
-          <FundModal
-            open={openAction === "fund"}
-            onOpenChange={(o) => !o && setOpenAction(null)}
-            userId={user.id}
-            ngnWalletId={ngnWalletId}
-            onCreated={() => { setRefreshKey((k) => k + 1); reload(); }}
-          />
-          <WithdrawModal
-            open={openAction === "withdraw"}
-            onOpenChange={(o) => !o && setOpenAction(null)}
-            userId={user.id}
-            wallets={wallets.filter((w) => ["NGN", "USD", "USDT"].includes(w.currency)) as any}
-            onCreated={() => { setRefreshKey((k) => k + 1); reload(); }}
-          />
-          <ConvertModal
-            open={openAction === "convert"}
-            onOpenChange={(o) => !o && setOpenAction(null)}
-            userId={user.id}
-            wallets={wallets.filter((w) => ["NGN", "USD", "USDT"].includes(w.currency)) as any}
-            onCreated={() => { setRefreshKey((k) => k + 1); reload(); }}
-          />
-          <Dialog open={openAction === "send"} onOpenChange={(o) => !o && setOpenAction(null)}>
-            <DialogContent className="bg-[hsl(220,30%,12%)] border-white/10 text-white">
-              <DialogHeader>
-                <DialogTitle className="text-white">Send to AstroTag</DialogTitle>
-                <DialogDescription className="text-white/60">
-                  Instantly send to another PremiumX user via AstroTag. Coming next.
-                </DialogDescription>
-              </DialogHeader>
-              <Button onClick={() => setOpenAction(null)} className="w-full">Got it</Button>
-            </DialogContent>
-          </Dialog>
-        </>
-      )}
     </div>
   );
 };
