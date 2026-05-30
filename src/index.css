@@ -85,23 +85,24 @@
   }
 
   .light {
-    --background: 210 30% 98%;
-    --foreground: 220 40% 10%;
+    /* Warm, soft canvas — easier on the eyes than pure white */
+    --background: 220 30% 95%;
+    --foreground: 220 40% 12%;
 
     --surface: 0 0% 100%;
-    --surface-elevated: 210 30% 96%;
-    --surface-overlay: 210 25% 93%;
+    --surface-elevated: 220 25% 97%;
+    --surface-overlay: 220 22% 93%;
 
     --card: 0 0% 100%;
-    --card-foreground: 220 40% 10%;
+    --card-foreground: 220 40% 12%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 220 40% 10%;
+    --popover-foreground: 220 40% 12%;
 
-    --secondary: 210 25% 94%;
-    --secondary-foreground: 220 40% 10%;
+    --secondary: 220 22% 92%;
+    --secondary-foreground: 220 40% 12%;
 
-    --muted: 210 22% 92%;
+    --muted: 220 20% 90%;
     --muted-foreground: 220 12% 40%;
 
     --primary: 43 96% 50%;
@@ -111,11 +112,11 @@
     --accent: 43 96% 50%;
     --accent-foreground: 220 40% 10%;
 
-    --border: 220 15% 88%;
-    --input: 220 15% 88%;
+    --border: 220 18% 86%;
+    --input: 220 18% 86%;
     --ring: 43 96% 50%;
 
-    --hero-gradient: radial-gradient(ellipse 80% 60% at 50% 0%, hsl(210 30% 94%) 0%, hsl(210 30% 98%) 60%);
+    --hero-gradient: radial-gradient(ellipse 80% 60% at 50% 0%, hsl(220 25% 92%) 0%, hsl(220 30% 95%) 60%);
     --gradient-surface: linear-gradient(180deg, hsl(var(--surface)) 0%, hsl(var(--surface-elevated)) 100%);
 
     --shadow-sm: 0 1px 2px hsl(220 20% 50% / 0.08);
@@ -125,11 +126,12 @@
     --shadow-elegant: 0 20px 60px -20px hsl(220 30% 40% / 0.18);
 
     --sidebar-background: 0 0% 100%;
-    --sidebar-foreground: 220 40% 10%;
-    --sidebar-accent: 210 25% 93%;
-    --sidebar-accent-foreground: 220 40% 10%;
-    --sidebar-border: 220 15% 88%;
+    --sidebar-foreground: 220 40% 12%;
+    --sidebar-accent: 220 22% 92%;
+    --sidebar-accent-foreground: 220 40% 12%;
+    --sidebar-border: 220 18% 86%;
   }
+
 }
 
 @layer base {
