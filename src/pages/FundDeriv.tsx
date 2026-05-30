@@ -243,6 +243,32 @@ const FundDeriv = () => {
                         </Select>
                       </div>
                     </>
+                  ) : selectedPlatform === "paypal" || selectedPlatform === "skrill" ? (
+                    <>
+                      <div>
+                        <Label className="text-xs text-white/70">{selectedPlatform === "paypal" ? "PayPal" : "Skrill"} Email</Label>
+                        <Input
+                          value={account}
+                          onChange={(e) => setAccount(e.target.value)}
+                          placeholder="your@email.com"
+                          maxLength={100}
+                          className="mt-1 bg-[hsl(220,30%,14%)] border-white/10 text-white"
+                        />
+                      </div>
+                      <div>
+                        <Label className="text-xs text-white/70">Currency</Label>
+                        <Select value={currency} onValueChange={setCurrency}>
+                          <SelectTrigger className="mt-1 bg-[hsl(220,30%,14%)] border-white/10 text-white">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent className="bg-[hsl(220,30%,14%)] border-white/10 text-white">
+                            <SelectItem value="USD">USD</SelectItem>
+                            <SelectItem value="EUR">EUR</SelectItem>
+                            <SelectItem value="GBP">GBP</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    </>
                   ) : (
                     <div>
                       <Label className="text-xs text-white/70">Account Email / ID</Label>
