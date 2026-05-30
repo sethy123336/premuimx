@@ -85,11 +85,13 @@ const FundDeriv = () => {
   const handleConfirm = () => {
     if (!selectedPlatform) return toast({ title: "Select a platform", variant: "destructive" });
     const isDeriv = selectedPlatform === "deriv";
+    const isBinance = selectedPlatform === "binance";
     if (isDeriv && !account.trim()) return toast({ title: "Enter Deriv CR number", variant: "destructive" });
-    if (!isDeriv && !account.trim()) return toast({ title: "Enter account ID", variant: "destructive" });
+    if (isBinance && !account.trim()) return toast({ title: "Enter Binance UID", variant: "destructive" });
+    if (!isDeriv && !isBinance && !account.trim()) return toast({ title: "Enter account ID", variant: "destructive" });
     if (isDeriv && !fullName.trim()) return toast({ title: "Enter full name", variant: "destructive" });
     if (usdAmt < 1) return toast({ title: "Enter valid amount", variant: "destructive" });
-    toast({ title: "Funding request submitted", description: `${PLATFORMS.find((p) => p.id === selectedPlatform)?.name} • $${usdAmt}` });
+    toast({ title: "Funding request submitted", description: `${PLATFORMS.find((p) => p.id === selectedPlatform)?.name} • $${usdAmt}${isBinance ? ` ${coinType}` : ""}` });
     setAccount(""); setFullName(""); setAmount("");
   };
 
