@@ -14,7 +14,7 @@ const Footer = () => {
               <span className="text-xl font-bold text-foreground tracking-tight">PremiumX</span>
             </div>
             <p className="text-muted-foreground text-sm leading-relaxed max-w-xs">
-              PremiumX is a unified platform for traders to manage funding, crypto assets, AI insights, and performance tracking in one place.
+              PremiumX is a unified platform for traders to fund Deriv accounts, manage crypto assets, access AI insights, and track performance in one place.
             </p>
           </div>
 

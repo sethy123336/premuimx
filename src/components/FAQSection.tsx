@@ -9,7 +9,7 @@ const faqs = [
   {
     question: "What is PremiumX?",
     answer:
-      "PremiumX is a platform that allows you to fund trading accounts, manage crypto, access AI insights, and track your trading performance in one place.",
+      "PremiumX is a platform that allows you to fund your Deriv account, manage crypto, access AI insights, and track your trading performance in one place.",
   },
   {
     question: "How do I fund my trading account?",
