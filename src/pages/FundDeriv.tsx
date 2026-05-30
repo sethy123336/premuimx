@@ -83,10 +83,13 @@ const FundDeriv = () => {
 
   const handleConfirm = () => {
     if (!selectedPlatform) return toast({ title: "Select a platform", variant: "destructive" });
-    if (!account.trim()) return toast({ title: "Enter account ID", variant: "destructive" });
+    const isDeriv = selectedPlatform === "deriv";
+    if (isDeriv && !account.trim()) return toast({ title: "Enter Deriv CR number", variant: "destructive" });
+    if (!isDeriv && !account.trim()) return toast({ title: "Enter account ID", variant: "destructive" });
+    if (isDeriv && !fullName.trim()) return toast({ title: "Enter full name", variant: "destructive" });
     if (usdAmt < 1) return toast({ title: "Enter valid amount", variant: "destructive" });
     toast({ title: "Funding request submitted", description: `${PLATFORMS.find((p) => p.id === selectedPlatform)?.name} • $${usdAmt}` });
-    setAccount(""); setAmount("");
+    setAccount(""); setFullName(""); setAmount("");
   };
 
   const handleWithdraw = () => {
