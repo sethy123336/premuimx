@@ -1,7 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
-import { Menu, User, Settings, Bell, Wallet, Monitor, Bot, BookOpen, LogOut, Shield, HelpCircle } from "lucide-react";
+import { Menu, User, Settings, Bell, Wallet, Monitor, Bot, BookOpen, LogOut, Shield, HelpCircle, Sun, Moon } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
+import { useTheme } from "@/hooks/useTheme";
 
 interface Props {
   username?: string;
@@ -23,6 +24,7 @@ const items = [
 const DrawerMenu = ({ username, email }: Props) => {
   const navigate = useNavigate();
   const { signOut } = useAuth();
+  const { theme, toggleTheme } = useTheme();
 
   const handleSignOut = async () => {
     await signOut();
@@ -60,7 +62,14 @@ const DrawerMenu = ({ username, email }: Props) => {
           })}
         </nav>
 
-        <div className="px-3 pt-2 border-t border-white/10">
+        <div className="px-3 pt-2 border-t border-white/10 space-y-1">
+          <button
+            onClick={toggleTheme}
+            className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-white/80 hover:bg-white/5 hover:text-white transition-colors"
+          >
+            {theme === "dark" ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+            {theme === "dark" ? "Light mode" : "Dark mode"}
+          </button>
           <button
             onClick={handleSignOut}
             className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-red-400 hover:bg-red-400/10 transition-colors"
