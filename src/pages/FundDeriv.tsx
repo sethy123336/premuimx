@@ -60,6 +60,7 @@ const FundDeriv = () => {
   // Deposit form
   const [account, setAccount] = useState("");
   const [fullName, setFullName] = useState("");
+  const [coinType, setCoinType] = useState("USDT");
   const [amount, setAmount] = useState("");
 
   // Withdraw form
