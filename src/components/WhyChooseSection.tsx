@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { Layers, Zap, Sparkles, ShieldCheck } from "lucide-react";
 
 const benefits = [
-  { icon: Layers, title: "All-in-One", description: "Funding, crypto, AI and tracking in one dashboard." },
+  { icon: Layers, title: "All-in-One", description: "Deriv funding, crypto, AI and tracking in one dashboard." },
   { icon: Zap, title: "Fast & Seamless", description: "Execute transactions without delays." },
   { icon: Sparkles, title: "Smart Insights", description: "AI guidance and analytics for better decisions." },
   { icon: ShieldCheck, title: "Full Control", description: "Track performance and stay in control." },
