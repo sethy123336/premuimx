@@ -89,7 +89,7 @@ const Wallet = () => {
           <>
             {/* Total Balance Card */}
             <div className="px-5 pt-4">
-              <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[hsl(220,40%,16%)] via-[hsl(220,45%,12%)] to-[hsl(220,50%,8%)] border border-white/10 p-6">
+              <div data-keep-dark className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[hsl(220,40%,16%)] via-[hsl(220,45%,12%)] to-[hsl(220,50%,8%)] border border-white/10 p-6 text-white">
                 <div className="absolute -right-10 -top-10 w-40 h-40 rounded-full bg-amber-400/10 blur-3xl pointer-events-none" />
                 <p className="text-xs uppercase tracking-wider text-white/60 font-medium">Total Balance (USD)</p>
                 <p className="text-5xl font-bold tracking-tight tabular-nums mt-3">
