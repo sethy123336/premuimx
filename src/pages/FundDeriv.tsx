@@ -243,10 +243,14 @@ const FundDeriv = () => {
                         </Select>
                       </div>
                     </>
-                  ) : selectedPlatform === "paypal" || selectedPlatform === "skrill" ? (
+                  ) : selectedPlatform === "paypal" || selectedPlatform === "skrill" || selectedPlatform === "neteller" || selectedPlatform === "bybit" ? (
                     <>
                       <div>
-                        <Label className="text-xs text-white/70">{selectedPlatform === "paypal" ? "PayPal" : "Skrill"} Email</Label>
+                        <Label className="text-xs text-white/70">{
+                          selectedPlatform === "paypal" ? "PayPal" :
+                          selectedPlatform === "skrill" ? "Skrill" :
+                          selectedPlatform === "neteller" ? "Neteller" : "Bybit"
+                        } Email</Label>
                         <Input
                           value={account}
                           onChange={(e) => setAccount(e.target.value)}
