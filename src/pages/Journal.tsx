@@ -18,7 +18,7 @@ const Journal = () => {
         </div>
         <h2 className="text-2xl font-semibold mb-2">Coming soon</h2>
         <p className="text-sm text-white/60 max-w-xs">
-          The trade journal is on its way. Log trades, track P&amp;L and review your edge — all in one place.
+          The trade journal is on its way. Log trades, track P&L and review your edge  all in one place.
         </p>
       </main>
       <BottomNav />
