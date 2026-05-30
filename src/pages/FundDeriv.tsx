@@ -59,6 +59,7 @@ const FundDeriv = () => {
 
   // Deposit form
   const [account, setAccount] = useState("");
+  const [fullName, setFullName] = useState("");
   const [amount, setAmount] = useState("");
 
   // Withdraw form
@@ -82,10 +83,13 @@ const FundDeriv = () => {
 
   const handleConfirm = () => {
     if (!selectedPlatform) return toast({ title: "Select a platform", variant: "destructive" });
-    if (!account.trim()) return toast({ title: "Enter account ID", variant: "destructive" });
+    const isDeriv = selectedPlatform === "deriv";
+    if (isDeriv && !account.trim()) return toast({ title: "Enter Deriv CR number", variant: "destructive" });
+    if (!isDeriv && !account.trim()) return toast({ title: "Enter account ID", variant: "destructive" });
+    if (isDeriv && !fullName.trim()) return toast({ title: "Enter full name", variant: "destructive" });
     if (usdAmt < 1) return toast({ title: "Enter valid amount", variant: "destructive" });
     toast({ title: "Funding request submitted", description: `${PLATFORMS.find((p) => p.id === selectedPlatform)?.name} • $${usdAmt}` });
-    setAccount(""); setAmount("");
+    setAccount(""); setFullName(""); setAmount("");
   };
 
   const handleWithdraw = () => {
@@ -185,16 +189,41 @@ const FundDeriv = () => {
                     <span className="text-xs text-white/50">selected</span>
                   </div>
 
-                  <div>
-                    <Label className="text-xs text-white/70">Account Email / ID</Label>
-                    <Input
-                      value={account}
-                      onChange={(e) => setAccount(e.target.value)}
-                      placeholder="your@deriv.com"
-                      maxLength={100}
-                      className="mt-1 bg-[hsl(220,30%,14%)] border-white/10 text-white"
-                    />
-                  </div>
+                  {selectedPlatform === "deriv" ? (
+                    <>
+                      <div>
+                        <Label className="text-xs text-white/70">Deriv CR Number</Label>
+                        <Input
+                          value={account}
+                          onChange={(e) => setAccount(e.target.value)}
+                          placeholder="CR1234567"
+                          maxLength={20}
+                          className="mt-1 bg-[hsl(220,30%,14%)] border-white/10 text-white"
+                        />
+                      </div>
+                      <div>
+                        <Label className="text-xs text-white/70">Full Name</Label>
+                        <Input
+                          value={fullName}
+                          onChange={(e) => setFullName(e.target.value)}
+                          placeholder="John Doe"
+                          maxLength={100}
+                          className="mt-1 bg-[hsl(220,30%,14%)] border-white/10 text-white"
+                        />
+                      </div>
+                    </>
+                  ) : (
+                    <div>
+                      <Label className="text-xs text-white/70">Account Email / ID</Label>
+                      <Input
+                        value={account}
+                        onChange={(e) => setAccount(e.target.value)}
+                        placeholder="your@email.com"
+                        maxLength={100}
+                        className="mt-1 bg-[hsl(220,30%,14%)] border-white/10 text-white"
+                      />
+                    </div>
+                  )}
 
                   <div>
                     <Label className="text-xs text-white/70">Amount (USD)</Label>
