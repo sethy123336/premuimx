@@ -68,7 +68,7 @@ const FundDeriv = () => {
   const [wPlatform, setWPlatform] = useState("deriv");
   const [wAccount, setWAccount] = useState("");
   const [wAmount, setWAmount] = useState("");
-  const [pin, setPin] = useState("");
+  
 
   useEffect(() => { fetchUsdRates().then(setRates); }, []);
 
