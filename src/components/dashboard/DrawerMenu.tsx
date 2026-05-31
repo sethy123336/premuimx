@@ -10,7 +10,7 @@ interface Props {
 }
 
 const items = [
-  { icon: User, label: "Profile", path: "/dashboard" },
+  
   { icon: Wallet, label: "Wallets", path: "/wallet" },
   { icon: Monitor, label: "Fund Deriv", path: "/fund-deriv" },
   { icon: BookOpen, label: "Journal", path: "/journal" },
