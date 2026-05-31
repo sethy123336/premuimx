@@ -68,7 +68,7 @@ const FundDeriv = () => {
   const [wPlatform, setWPlatform] = useState("deriv");
   const [wAccount, setWAccount] = useState("");
   const [wAmount, setWAmount] = useState("");
-  const [pin, setPin] = useState("");
+  
 
   useEffect(() => { fetchUsdRates().then(setRates); }, []);
 
@@ -99,9 +99,8 @@ const FundDeriv = () => {
   const handleWithdraw = () => {
     if (!wAccount.trim()) return toast({ title: "Enter destination account", variant: "destructive" });
     if (Number(wAmount) < 1) return toast({ title: "Enter valid amount", variant: "destructive" });
-    if (pin.length < 4) return toast({ title: "Enter 4-digit PIN", variant: "destructive" });
     toast({ title: "Withdrawal submitted", description: `${PLATFORMS.find((p) => p.id === wPlatform)?.name} • $${wAmount}` });
-    setWAccount(""); setWAmount(""); setPin("");
+    setWAccount(""); setWAmount("");
   };
 
   return (
@@ -351,17 +350,6 @@ const FundDeriv = () => {
               />
             </div>
 
-            <div>
-              <Label className="text-xs text-white/70">Security PIN</Label>
-              <Input
-                value={pin}
-                onChange={(e) => setPin(e.target.value.replace(/\D/g, "").slice(0, 6))}
-                inputMode="numeric"
-                type="password"
-                placeholder="••••"
-                className="mt-1 bg-[hsl(220,30%,14%)] border-white/10 text-white tracking-widest"
-              />
-            </div>
 
             <Button onClick={handleWithdraw} className="w-full bg-[hsl(220,30%,14%)] hover:bg-[hsl(220,30%,18%)] border border-white/10">
               Submit Withdrawal
