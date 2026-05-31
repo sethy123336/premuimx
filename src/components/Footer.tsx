@@ -14,23 +14,22 @@ const Footer = () => {
               <span className="text-xl font-bold text-foreground tracking-tight">PremiumX</span>
             </div>
             <p className="text-muted-foreground text-sm leading-relaxed max-w-xs">
-              PremiumX is a unified platform for traders to fund Deriv accounts, manage crypto assets, access AI insights, and track performance in one place.
+              A unified platform for traders to fund Deriv accounts, manage crypto assets, access AI insights, and track performance in one place.
             </p>
           </div>
 
           {/* Resources */}
-          <div>
-            <h3 className="text-foreground font-semibold text-base mb-4">Resources</h3>
+          <div className="md:border-l md:border-border md:pl-12">
+            <h3 className="text-muted-foreground font-semibold text-xs uppercase tracking-widest mb-4">Resources</h3>
             <div className="flex flex-wrap gap-x-6 gap-y-3">
-              <Link to="/privacy-policy" className="text-muted-foreground text-sm hover:text-foreground transition-colors">Privacy Policy</Link>
-              <Link to="/terms-and-conditions" className="text-muted-foreground text-sm hover:text-foreground transition-colors">Terms & Conditions</Link>
-              
+              <Link to="/privacy-policy" className="text-foreground text-sm hover:text-primary transition-colors">Privacy Policy</Link>
+              <Link to="/terms-and-conditions" className="text-foreground text-sm hover:text-primary transition-colors">Terms & Conditions</Link>
             </div>
           </div>
 
           {/* Contact Us */}
-          <div>
-            <h3 className="text-foreground font-semibold text-base mb-5">Contact Us</h3>
+          <div className="md:border-l md:border-border md:pl-12">
+            <h3 className="text-muted-foreground font-semibold text-xs uppercase tracking-widest mb-5">Contact Us</h3>
             <div className="space-y-4">
               <div className="flex items-center gap-3">
                 <Mail className="w-4 h-4 text-primary shrink-0" />
