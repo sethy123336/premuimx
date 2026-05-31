@@ -99,9 +99,8 @@ const FundDeriv = () => {
   const handleWithdraw = () => {
     if (!wAccount.trim()) return toast({ title: "Enter destination account", variant: "destructive" });
     if (Number(wAmount) < 1) return toast({ title: "Enter valid amount", variant: "destructive" });
-    if (Number(wAmount) < 1) return toast({ title: "Enter valid amount", variant: "destructive" });
     toast({ title: "Withdrawal submitted", description: `${PLATFORMS.find((p) => p.id === wPlatform)?.name} • $${wAmount}` });
-    setWAccount(""); setWAmount(""); setPin("");
+    setWAccount(""); setWAmount("");
   };
 
   return (
