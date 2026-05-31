@@ -14,13 +14,13 @@ const Index = () => {
     <div className="min-h-screen bg-background">
       <Navbar />
       <HeroSection />
-      <RatesStrip />
-      <Reveal><AboutSection /></Reveal>
-      <Reveal><WhatWeDoSection /></Reveal>
-      <Reveal><WhyChooseSection /></Reveal>
-      <Reveal><FAQSection /></Reveal>
-      <Reveal><CTABanner /></Reveal>
-      <Footer />
+      <Reveal variant="fade" duration={600}><RatesStrip /></Reveal>
+      <Reveal variant="fade-up"><AboutSection /></Reveal>
+      <Reveal variant="blur-up" delay={80}><WhatWeDoSection /></Reveal>
+      <Reveal variant="fade-up"><WhyChooseSection /></Reveal>
+      <Reveal variant="scale"><FAQSection /></Reveal>
+      <Reveal variant="fade-up"><CTABanner /></Reveal>
+      <Reveal variant="fade"><Footer /></Reveal>
     </div>
   );
 };
