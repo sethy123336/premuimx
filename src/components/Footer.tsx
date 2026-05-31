@@ -30,24 +30,25 @@ const Footer = () => {
 
           {/* Contact Us */}
           <div>
-            <h3 className="text-foreground font-semibold text-base mb-4">Contact Us</h3>
-            <div className="space-y-3">
-              <div className="flex items-start gap-3">
-                <Mail className="w-4 h-4 text-primary mt-0.5 shrink-0" />
+            <h3 className="text-foreground font-semibold text-base mb-5">Contact Us</h3>
+            <div className="space-y-4">
+              <div className="flex items-center gap-3">
+                <Mail className="w-4 h-4 text-primary shrink-0" />
                 <span className="text-muted-foreground text-sm">support@premiumx.com</span>
               </div>
-              <div className="flex items-start gap-3">
-                <MapPin className="w-4 h-4 text-primary mt-0.5 shrink-0" />
+              <div className="flex items-center gap-3">
+                <MapPin className="w-4 h-4 text-primary shrink-0" />
                 <span className="text-muted-foreground text-sm">Abuja, Nigeria</span>
               </div>
-              <div className="flex items-start gap-3">
-                <Phone className="w-4 h-4 text-primary mt-0.5 shrink-0" />
+              <div className="flex items-center gap-3">
+                <Phone className="w-4 h-4 text-primary shrink-0" />
                 <span className="text-muted-foreground text-sm">+234 800 000 0000</span>
               </div>
-              <div className="flex items-center gap-4 mt-2">
-                <a href="#" aria-label="X" className="text-muted-foreground hover:text-primary transition-colors inline-flex items-center justify-center w-5 h-5 text-base leading-none">𝕏</a>
-                <a href="#" aria-label="Instagram" className="text-muted-foreground hover:text-primary transition-colors inline-flex items-center justify-center w-5 h-5">
-                  <Instagram className="w-5 h-5" />
+              <div className="pt-4 mt-2 border-t border-border flex items-center gap-3">
+                <span className="text-muted-foreground text-sm">Follow</span>
+                <a href="#" aria-label="X" className="w-9 h-9 rounded-lg border border-border bg-background/40 flex items-center justify-center text-foreground hover:text-primary hover:border-primary/40 transition-colors text-sm">𝕏</a>
+                <a href="#" aria-label="Instagram" className="w-9 h-9 rounded-lg border border-border bg-background/40 flex items-center justify-center text-foreground hover:text-primary hover:border-primary/40 transition-colors">
+                  <Instagram className="w-4 h-4" />
                 </a>
               </div>
             </div>
