@@ -159,21 +159,27 @@
 /* ============ Light-mode overrides for hardcoded dashboard colors ============ */
 /* Page canvases — warm soft navy-tinted background, not stark white */
 .light .bg-\[hsl\(220\2c 40\%\2c 7\%\)\],
-.light .bg-\[hsl\(220\2c 40\%\2c 8\%\)\] {
+.light .bg-\[hsl\(220\2c 40\%\2c 8\%\)\],
+.light .bg-\[hsl\(220\2c 30\%\2c 7\%\)\] {
   background-color: hsl(220 30% 95%) !important;
 }
 /* Card surfaces — pure white pops nicely on the tinted canvas */
-.light .bg-\[hsl\(220\2c 30\%\2c 12\%\)\],
+.light .bg-\[hsl\(220\2c 30\%\2c 10\%\)\],
 .light .bg-\[hsl\(220\2c 30\%\2c 11\%\)\],
+.light .bg-\[hsl\(220\2c 30\%\2c 12\%\)\],
+.light .bg-\[hsl\(220\2c 30\%\2c 13\%\)\],
 .light .bg-\[hsl\(220\2c 32\%\2c 11\%\)\] {
   background-color: hsl(0 0% 100%) !important;
   box-shadow: 0 1px 3px hsl(220 30% 40% / 0.06), 0 1px 2px hsl(220 30% 40% / 0.04);
 }
+.light .bg-\[hsl\(220\2c 30\%\2c 14\%\)\],
 .light .bg-\[hsl\(220\2c 30\%\2c 15\%\)\],
+.light .bg-\[hsl\(220\2c 30\%\2c 16\%\)\],
 .light .bg-\[hsl\(220\2c 30\%\2c 18\%\)\],
 .light .hover\:bg-\[hsl\(220\2c 30\%\2c 15\%\)\]:hover,
-.light .bg-\[hsl\(220\2c 30\%\2c 14\%\)\],
-.light .hover\:bg-\[hsl\(220\2c 30\%\2c 14\%\)\]:hover {
+.light .hover\:bg-\[hsl\(220\2c 30\%\2c 14\%\)\]:hover,
+.light .hover\:bg-\[hsl\(220\2c 30\%\2c 18\%\)\]:hover,
+.light .hover\:bg-\[hsl\(220\2c 30\%\2c 13\%\)\]:hover {
   background-color: hsl(220 22% 92%) !important;
 }
 
