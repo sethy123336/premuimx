@@ -30,27 +30,46 @@ const Footer = () => {
           {/* Contact Us */}
           <div className="md:border-l md:border-border md:pl-12">
             <h3 className="text-muted-foreground font-semibold text-xs uppercase tracking-widest mb-5">Contact Us</h3>
-            <div className="space-y-4">
-              <div className="flex items-center gap-3">
-                <Mail className="w-4 h-4 text-primary shrink-0" />
-                <span className="text-muted-foreground text-sm">support@premiumx.com</span>
-              </div>
-              <div className="flex items-center gap-3">
-                <MapPin className="w-4 h-4 text-primary shrink-0" />
-                <span className="text-muted-foreground text-sm">Abuja, Nigeria</span>
-              </div>
-              <div className="flex items-center gap-3">
-                <Phone className="w-4 h-4 text-primary shrink-0" />
-                <span className="text-muted-foreground text-sm">+234 800 000 0000</span>
-              </div>
-              <div className="pt-4 mt-2 border-t border-border flex items-center gap-3">
-                <span className="w-4 shrink-0" aria-hidden="true" />
-                <a href="#" aria-label="X" className="w-9 h-9 rounded-lg border border-border bg-background/40 flex items-center justify-center text-foreground hover:text-primary hover:border-primary/40 transition-colors text-sm">𝕏</a>
-                <a href="#" aria-label="Instagram" className="w-9 h-9 rounded-lg border border-border bg-background/40 flex items-center justify-center text-foreground hover:text-primary hover:border-primary/40 transition-colors">
-                  <Instagram className="w-4 h-4" />
+            <ul className="space-y-3">
+              <li>
+                <a href="mailto:support@premiumx.com" className="flex items-center gap-3 group">
+                  <span className="w-9 h-9 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center shrink-0">
+                    <Mail className="w-4 h-4 text-primary" />
+                  </span>
+                  <span className="text-muted-foreground text-sm group-hover:text-foreground transition-colors">support@premiumx.com</span>
                 </a>
-              </div>
-            </div>
+              </li>
+              <li>
+                <div className="flex items-center gap-3">
+                  <span className="w-9 h-9 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center shrink-0">
+                    <MapPin className="w-4 h-4 text-primary" />
+                  </span>
+                  <span className="text-muted-foreground text-sm">Abuja, Nigeria</span>
+                </div>
+              </li>
+              <li>
+                <a href="tel:+2348000000000" className="flex items-center gap-3 group">
+                  <span className="w-9 h-9 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center shrink-0">
+                    <Phone className="w-4 h-4 text-primary" />
+                  </span>
+                  <span className="text-muted-foreground text-sm group-hover:text-foreground transition-colors">+234 800 000 0000</span>
+                </a>
+              </li>
+              <li>
+                <a href="#" aria-label="Follow on X" className="flex items-center gap-3 group">
+                  <span className="w-9 h-9 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center shrink-0 text-primary text-sm">𝕏</span>
+                  <span className="text-muted-foreground text-sm group-hover:text-foreground transition-colors">Follow on X</span>
+                </a>
+              </li>
+              <li>
+                <a href="#" aria-label="Follow on Instagram" className="flex items-center gap-3 group">
+                  <span className="w-9 h-9 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center shrink-0">
+                    <Instagram className="w-4 h-4 text-primary" />
+                  </span>
+                  <span className="text-muted-foreground text-sm group-hover:text-foreground transition-colors">Follow on Instagram</span>
+                </a>
+              </li>
+            </ul>
           </div>
         </div>
       </div>
