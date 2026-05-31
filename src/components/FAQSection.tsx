@@ -17,6 +17,11 @@ const faqs = [
       "You can fund your account by depositing funds into your wallet and transferring them directly to your trading account.",
   },
   {
+    question: "How do I fund my Deriv account with PremiumX?",
+    answer:
+      "Top up your PremiumX wallet with NGN, USD or crypto, then use the Fund Deriv option to instantly transfer funds to your Deriv account using your Deriv ID  no extra exchanges or middlemen needed.",
+  },
+  {
     question: "Does PremiumX support cryptocurrency?",
     answer:
       "Yes, you can store, send, and manage crypto assets securely within the platform.",
