@@ -129,10 +129,19 @@ const Login = () => {
 
         <div className="grid grid-cols-2 gap-3">
           <button onClick={() => oauthSoon("Google")} className="h-11 rounded-xl bg-[hsl(220,30%,14%)] border border-white/10 text-sm font-medium flex items-center justify-center gap-2 hover:bg-[hsl(220,30%,18%)]">
-            <span className="font-bold text-base">G</span> Google
+            <svg width="18" height="18" viewBox="0 0 48 48" aria-hidden="true">
+              <path fill="#FFC107" d="M43.611 20.083H42V20H24v8h11.303c-1.649 4.657-6.08 8-11.303 8-6.627 0-12-5.373-12-12s5.373-12 12-12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4 12.955 4 4 12.955 4 24s8.955 20 20 20 20-8.955 20-20c0-1.341-.138-2.65-.389-3.917z"/>
+              <path fill="#FF3D00" d="M6.306 14.691l6.571 4.819C14.655 15.108 18.961 12 24 12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4 16.318 4 9.656 8.337 6.306 14.691z"/>
+              <path fill="#4CAF50" d="M24 44c5.166 0 9.86-1.977 13.409-5.192l-6.19-5.238C29.211 35.091 26.715 36 24 36c-5.202 0-9.619-3.317-11.283-7.946l-6.522 5.025C9.505 39.556 16.227 44 24 44z"/>
+              <path fill="#1976D2" d="M43.611 20.083H42V20H24v8h11.303c-.792 2.237-2.231 4.166-4.087 5.571.001-.001.002-.001.003-.002l6.19 5.238C36.971 39.205 44 34 44 24c0-1.341-.138-2.65-.389-3.917z"/>
+            </svg>
+            Google
           </button>
           <button onClick={() => oauthSoon("Apple")} className="h-11 rounded-xl bg-[hsl(220,30%,14%)] border border-white/10 text-sm font-medium flex items-center justify-center gap-2 hover:bg-[hsl(220,30%,18%)]">
-            <span className="text-base"></span> Apple
+            <svg width="16" height="18" viewBox="0 0 384 512" fill="currentColor" aria-hidden="true">
+              <path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zM256.6 84.4c30.3-36 27.6-68.8 26.7-80.4-26.8 1.6-57.8 18.3-75.5 38.9-19.4 22-30.8 49.2-28.4 79.8 29.0 2.2 55.5-12.7 77.2-38.3z"/>
+            </svg>
+            Apple
           </button>
         </div>
       </div>
