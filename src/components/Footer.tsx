@@ -44,7 +44,7 @@ const Footer = () => {
                 <span className="text-muted-foreground text-sm">+234 800 000 0000</span>
               </div>
               <div className="pt-4 mt-2 border-t border-border flex items-center gap-3">
-                <span className="text-muted-foreground text-sm">Follow</span>
+                <span className="w-4 shrink-0" aria-hidden="true" />
                 <a href="#" aria-label="X" className="w-9 h-9 rounded-lg border border-border bg-background/40 flex items-center justify-center text-foreground hover:text-primary hover:border-primary/40 transition-colors text-sm">𝕏</a>
                 <a href="#" aria-label="Instagram" className="w-9 h-9 rounded-lg border border-border bg-background/40 flex items-center justify-center text-foreground hover:text-primary hover:border-primary/40 transition-colors">
                   <Instagram className="w-4 h-4" />
