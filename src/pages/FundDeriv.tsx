@@ -351,17 +351,6 @@ const FundDeriv = () => {
               />
             </div>
 
-            <div>
-              <Label className="text-xs text-white/70">Security PIN</Label>
-              <Input
-                value={pin}
-                onChange={(e) => setPin(e.target.value.replace(/\D/g, "").slice(0, 6))}
-                inputMode="numeric"
-                type="password"
-                placeholder="••••"
-                className="mt-1 bg-[hsl(220,30%,14%)] border-white/10 text-white tracking-widest"
-              />
-            </div>
 
             <Button onClick={handleWithdraw} className="w-full bg-[hsl(220,30%,14%)] hover:bg-[hsl(220,30%,18%)] border border-white/10">
               Submit Withdrawal
